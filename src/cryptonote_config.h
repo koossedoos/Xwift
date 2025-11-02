@@ -51,9 +51,12 @@
 #define BLOCKCHAIN_TIMESTAMP_CHECK_WINDOW               60
 
 // MONEY_SUPPLY - total number coins to be generated
-#define MONEY_SUPPLY                                    ((uint64_t)(-1))
-#define EMISSION_SPEED_FACTOR_PER_MINUTE                (20)
-#define FINAL_SUBSIDY_PER_MINUTE                        ((uint64_t)300000000000) // 3 * pow(10, 11)
+// Xwift: 108.8M XFT total supply (108,800,000 * 1e12 atomic units)
+#define MONEY_SUPPLY                                    ((uint64_t)108800000000000)
+// Xwift: Emission speed factor for 10-second blocks (formula: 20 - (target_minutes - 1) where target = 10/60)
+#define EMISSION_SPEED_FACTOR_PER_MINUTE                (21)
+// Xwift: Tail emission 0.6 XFT per block (600,000,000 atomic units)
+#define FINAL_SUBSIDY_PER_MINUTE                        ((uint64_t)600000000) // 0.6 XFT per block
 
 #define CRYPTONOTE_REWARD_BLOCKS_WINDOW                 100
 #define CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE_V2    60000 //size of block (bytes) after which reward for block calculated using block size
