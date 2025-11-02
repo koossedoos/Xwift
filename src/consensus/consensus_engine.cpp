@@ -126,7 +126,32 @@ bool ConsensusEngine::estimate_hashrate_concentration(const cryptonote::Blockcha
   // 3. Calculate percentage of difficulty for each entity
   // 4. Return true if any entity has >25% of difficulty
   //
-  // Current implementation: Returns false (no concentration)
+  // This is a defense mechanism against centralization attacks and selfish mining
+
+  // For current implementation, we'll use a simplified approach
+  // TODO: Implement full analysis with extraNonce mining pool identification
+
+  uint64_t current_height = chain.get_current_blockchain_height();
+
+  // Ensure we have enough blocks to analyze
+  if (current_height < window_size) {
+    window_size = current_height;
+  }
+
+  if (window_size < 10) {
+    // Not enough blocks for meaningful analysis
+    return false;
+  }
+
+  // Simplified analysis: Check if recent blocks show unusual patterns
+  // that might indicate concentration (very regular timing, etc.)
+
+  // For now, return false - no concentration detected
+  // In a full implementation, this would:
+  // 1. Extract miner identifiers from block headers
+  // 2. Calculate hashrate shares per miner
+  // 3. Check if any miner exceeds PUBLISH_OR_PERISH_THRESHOLD (25%)
+
   return false;
 }
 
