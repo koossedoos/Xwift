@@ -126,7 +126,7 @@ void TransactionHistoryImpl::refresh()
     // - payment_details              - input transfers
 
     // payments are "input transactions";
-    // one input transaction contains only one transfer. e.g. <transaction_id> - <100XMR>
+    // one input transaction contains only one transfer. e.g. <transaction_id> - <100XFT
 
     std::list<std::pair<crypto::hash, tools::wallet2::payment_details>> in_payments;
     m_wallet->m_wallet->get_payments(in_payments, min_height, max_height);
