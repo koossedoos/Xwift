@@ -85,7 +85,7 @@ namespace cryptonote {
     // Monero's assertion no longer applies since target_minutes can be fractional
     // static_assert(DIFFICULTY_TARGET_V2%60==0&&DIFFICULTY_TARGET_V1%60==0,"difficulty targets must be a multiple of 60");
 
-    const int target = version < 2 ? DIFFICULTY_TARGET_V1 : DIFFICULTY_TARGET_V2;
+    // const int target = version < 2 ? DIFFICULTY_TARGET_V1 : DIFFICULTY_TARGET_V2; // Xwift: unused but kept for reference
 
     // Xwift: Calculate emission speed factor
     // For 10-second blocks: EMISSION_SPEED_FACTOR_PER_MINUTE = 21
