@@ -242,6 +242,14 @@ namespace cryptonote {
     if (time_span == 0) {
       time_span = 1;
     }
+
+    // Xwift: Bound timespan to prevent extreme difficulty swings
+    // For 10-second blocks: max timespan = 10 * 10 * 2 = 200 seconds
+    const uint64_t max_time_span = (uint64_t)DIFFICULTY_TARGET_V2 * DIFFICULTY_WINDOW * 2;
+    if (time_span > max_time_span) {
+      time_span = max_time_span;
+    }
+
     difficulty_type total_work = cumulative_difficulties[cut_end - 1] - cumulative_difficulties[cut_begin];
     assert(total_work > 0);
     boost::multiprecision::uint256_t res =  (boost::multiprecision::uint256_t(total_work) * target_seconds + time_span - 1) / time_span;
