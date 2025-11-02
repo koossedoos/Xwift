@@ -3309,6 +3309,20 @@ bool Blockchain::check_tx_inputs(transaction& tx, tx_verification_context &tvc, 
     }
     MDEBUG("Mixin: " << min_actual_mixin << "-" << max_actual_mixin);
 
+    // Xwift: Enforce mandatory ring size 16 from block 1 (genesis)
+    if (hf_version >= HF_VERSION_RING_SIZE_16)
+    {
+      const size_t required_ring_size = 16;
+      const size_t actual_ring_size = min_actual_mixin + 1;
+
+      if (actual_ring_size != required_ring_size)
+      {
+        MERROR_VER("Tx " << get_transaction_hash(tx) << " has ring size " << actual_ring_size << ", but ring size must be exactly 16");
+        tvc.m_low_mixin = true;
+        return false;
+      }
+    }
+
     if (hf_version >= HF_VERSION_SAME_MIXIN)
     {
       if (min_actual_mixin != max_actual_mixin)
