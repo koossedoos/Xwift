@@ -176,9 +176,33 @@ bool ConsensusEngine::detect_selfish_mining_attempt(const cryptonote::Blockchain
   // Heuristics:
   // 1. Concentrated entity publishes blocks near deadline boundary
   // 2. Unusual gap between blocks followed by burst of blocks
-  // 3. Logs findings for monitoring
+  // 3. Multiple blocks from same entity in rapid succession
+  // 4. Logs findings for monitoring
   //
-  // Current implementation: Returns false (no suspicious pattern)
+  // Selfish mining is when miners withhold blocks and only publish
+  // when competing blocks appear, to maximize their advantage
+
+  uint64_t current_height = chain.get_current_blockchain_height();
+  const uint64_t analysis_window = 50; // Analyze last 50 blocks
+
+  if (current_height < analysis_window) {
+    return false; // Not enough data
+  }
+
+  // TODO: Implement full selfish mining detection:
+  // 1. Analyze block timing patterns for unusual gaps/bursts
+  // 2. Check if blocks from same entity cluster around deadlines
+  // 3. Monitor for rapid succession blocks from single entity
+  // 4. Calculate statistical anomalies in block publication
+
+  // For now, perform basic checks:
+  bool has_concentration = estimate_hashrate_concentration(chain, analysis_window);
+  if (has_concentration) {
+    MWARNING("Selfish mining detection: Hashrate concentration detected");
+    // Additional checks would go here
+  }
+
+  // Current implementation: no selfish mining detected
   return false;
 }
 
