@@ -16,7 +16,7 @@
 namespace xwift_consensus {
 
 bool ConsensusEngine::validate_uncle_blocks(const cryptonote::block& block, const cryptonote::Blockchain& chain) {
-  // TODO: Implement when block structure is extended with uncle_block_ids
+  // Xwift Uncle Block Validation
   //
   // Validation rules:
   // 1. Uncle must reference existing orphaned block (not in main chain)
@@ -25,8 +25,21 @@ bool ConsensusEngine::validate_uncle_blocks(const cryptonote::block& block, cons
   // 4. No uncle loops (uncle cannot reference block that references it)
   // 5. Cannot include same uncle twice (prevent spam)
   // 6. Uncle cannot be parent of current block
+  // 7. Maximum 2 uncle blocks per block
   //
-  // Current implementation: No uncles (placeholder)
+  // Current implementation: Placeholder for when block structure supports uncles
+  // Always returns true for now since uncle block IDs are not yet implemented
+
+  // TODO: When block structure is extended to include uncle_block_ids:
+  // 1. Check that block.uncle_block_ids.size() <= MAX_UNCLE_BLOCKS_PER_BLOCK
+  // 2. For each uncle_id in block.uncle_block_ids:
+  //    a. Verify uncle exists as orphaned block (not in main chain)
+  //    b. Verify uncle_depth = current_height - uncle.height <= MAX_UNCLE_DEPTH
+  //    c. Verify uncle has valid proof-of-work
+  //    d. Verify no circular references
+  //    e. Verify no duplicate uncles
+  //    f. Verify uncle is not parent of current block
+
   return true;
 }
 
