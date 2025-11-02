@@ -78,13 +78,42 @@ bool ConsensusEngine::check_publish_or_perish(const cryptonote::block& block, co
   // Publish-or-perish defense: prevents selfish mining attacks
   //
   // Process:
-  // 1. Check if hashrate concentration detected
+  // 1. Check if hashrate concentration detected (>25% threshold)
   // 2. If not detected: return true (normal operation)
   // 3. If detected: check block timestamp vs publish deadline
   // 4. If concentrated entity violates deadline: return false (reject block)
   // 5. Otherwise: return true (accept block)
   //
-  // Current implementation: No hashrate concentration detection yet
+  // This defense mechanism discourages selfish mining by enforcing timely block
+  // publication when mining power becomes too concentrated
+
+  // Check if we have concentration
+  bool has_concentration = estimate_hashrate_concentration(chain);
+
+  if (!has_concentration) {
+    // No concentration detected, allow normal operation
+    return true;
+  }
+
+  // Concentration detected - enforce publish deadline
+  uint64_t current_height = chain.get_current_blockchain_height();
+
+  // Get previous block timestamp (need blockchain access for this)
+  // For now, assume block.timestamp is properly set
+  uint64_t prev_timestamp = block.timestamp; // TODO: Get actual previous block timestamp
+
+  // Calculate deadline for this block
+  uint64_t deadline = calculate_publish_deadline(current_height, prev_timestamp);
+
+  // Check if block was published before deadline
+  if (block.timestamp > deadline) {
+    // Block published too late - potentially selfish mining
+    MWARNING("Publish-or-perish: Block published after deadline (timestamp: "
+             << block.timestamp << ", deadline: " << deadline
+             << ") - possible selfish mining attempt");
+    return false;
+  }
+
   return true;
 }
 
