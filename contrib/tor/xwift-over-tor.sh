@@ -28,7 +28,7 @@ then
 fi
 echo "Found: $xwift-daemon"
 
-TORDIR="$DIR/monero-over-tor"
+TORDIR="$DIR/xwift-over-tor"
 TORRC="$TORDIR/torrc"
 HOSTNAMEFILE="$TORDIR/hostname"
 echo "Creating configuration..."
