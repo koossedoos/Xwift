@@ -81,15 +81,24 @@ namespace cryptonote {
   }
   //-----------------------------------------------------------------------------------------------
   bool get_block_reward(size_t median_weight, size_t current_block_weight, uint64_t already_generated_coins, uint64_t &reward, uint8_t version) {
-    static_assert(DIFFICULTY_TARGET_V2%60==0&&DIFFICULTY_TARGET_V1%60==0,"difficulty targets must be a multiple of 60");
+    // Xwift: Modified for 10-second blocks (not divisible by 60)
+    // Monero's assertion no longer applies since target_minutes can be fractional
+    // static_assert(DIFFICULTY_TARGET_V2%60==0&&DIFFICULTY_TARGET_V1%60==0,"difficulty targets must be a multiple of 60");
+
     const int target = version < 2 ? DIFFICULTY_TARGET_V1 : DIFFICULTY_TARGET_V2;
-    const int target_minutes = target / 60;
-    const int emission_speed_factor = EMISSION_SPEED_FACTOR_PER_MINUTE - (target_minutes-1);
+
+    // Xwift: Calculate emission speed factor
+    // For 10-second blocks: EMISSION_SPEED_FACTOR_PER_MINUTE = 21
+    // This maintains the exponential curve: base_reward = (MONEY_SUPPLY - already_generated) >> 21
+    const int emission_speed_factor = EMISSION_SPEED_FACTOR_PER_MINUTE;
 
     uint64_t base_reward = (MONEY_SUPPLY - already_generated_coins) >> emission_speed_factor;
-    if (base_reward < FINAL_SUBSIDY_PER_MINUTE*target_minutes)
+
+    // Xwift: Tail emission is 0.6 XFT per block (FINAL_SUBSIDY_PER_MINUTE is actually per-block in Xwift)
+    // After base emission exhausted, maintain 0.6 XFT tail emission indefinitely
+    if (base_reward < FINAL_SUBSIDY_PER_MINUTE)
     {
-      base_reward = FINAL_SUBSIDY_PER_MINUTE*target_minutes;
+      base_reward = FINAL_SUBSIDY_PER_MINUTE;
     }
 
     uint64_t full_reward_zone = get_min_block_weight(version);
