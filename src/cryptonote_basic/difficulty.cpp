@@ -155,7 +155,7 @@ namespace cryptonote {
     // For 10-second blocks: max timespan = 10 * 10 * 2 = 200 seconds
     // This prevents stalled blocks or flash mining from breaking difficulty
     const uint64_t max_time_span = (uint64_t)DIFFICULTY_TARGET_V2 * DIFFICULTY_WINDOW * 2;
-    const uint64_t min_time_span = 1; // Already handled above, but explicit for clarity
+      // Xwift: min_time_span is now used above
 
     if (time_span > max_time_span) {
       time_span = max_time_span;
