@@ -1466,7 +1466,7 @@ bool t_rpc_command_executor::print_status()
     tools::success_msg_writer() << "xwift-daemon is running";
   }
   else {
-    tools::fail_msg_writer() << "monerod is NOT running";
+    tools::fail_msg_writer() << "xwift-daemon is NOT running";
   }
 
   return true;
