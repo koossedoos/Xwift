@@ -29,8 +29,8 @@
 // Xwift: RandomX PoW wrapper implementation
 
 #include "randomx_wrapper.h"
-#include "difficulty.h"
-#include "int-util.h"
+#include "cryptonote_basic/difficulty.h"
+#include "common/int-util.h"
 #include <cstring>
 #include <memory>
 
