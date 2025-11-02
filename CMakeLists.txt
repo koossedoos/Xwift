@@ -576,8 +576,8 @@ add_definition_if_function_found(strptime HAVE_STRPTIME)
 
 add_definitions(-DAUTO_INITIALIZE_EASYLOGGINGPP)
 
-set(MONERO_GENERATED_HEADERS_DIR "${CMAKE_CURRENT_BINARY_DIR}/generated_include")
-include_directories(${MONERO_GENERATED_HEADERS_DIR})
+set(XWIFT_GENERATED_HEADERS_DIR "${CMAKE_CURRENT_BINARY_DIR}/generated_include")
+include_directories(${XWIFT_GENERATED_HEADERS_DIR})
 
 # As of OpenBSD 6.8, -march=<anything> breaks the build
 function(set_default_arch)
