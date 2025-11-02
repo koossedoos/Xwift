@@ -80,11 +80,15 @@
 #define ORPHANED_BLOCKS_MAX_COUNT                       100
 
 
-#define DIFFICULTY_TARGET_V2                            120  // seconds
-#define DIFFICULTY_TARGET_V1                            60  // seconds - before first fork
-#define DIFFICULTY_WINDOW                               720 // blocks
-#define DIFFICULTY_LAG                                  15  // !!!
-#define DIFFICULTY_CUT                                  60  // timestamps to cut after sorting
+// Xwift: 10-second block time (fast transactions)
+#define DIFFICULTY_TARGET_V2                            10  // seconds
+#define DIFFICULTY_TARGET_V1                            60  // seconds - before first fork (unused in Xwift)
+// Xwift: 10-block difficulty window for rapid adjustment
+#define DIFFICULTY_WINDOW                               10 // blocks
+// Xwift: Minimal lag for 10-block window
+#define DIFFICULTY_LAG                                  1  // !!!
+// Xwift: Remove 1 outlier from each end (vs 60 in Monero)
+#define DIFFICULTY_CUT                                  1  // timestamps to cut after sorting
 #define DIFFICULTY_BLOCKS_COUNT                         DIFFICULTY_WINDOW + DIFFICULTY_LAG
 
 
