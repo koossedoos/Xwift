@@ -1,0 +1,41 @@
+# Makefile for Xwift Consensus Engine Validation Tests
+# Simplified makefile for consensus testing
+
+CXX = g++
+CXXFLAGS = -std=c++17 -Wall -Wextra -g -O0
+INCLUDES = -I../src -I../external -I../external/easylogging++ -I../contrib/epee/include
+LIBS = -lboost_system -lboost_filesystem -lboost_thread -lpthread
+
+# Source files
+CONSENSUS_SOURCES = ../src/consensus/consensus_engine.cpp
+CORE_SOURCES = ../src/cryptonote_core/cryptonote_tx_utils.cpp
+BASIC_SOURCES = ../src/cryptonote_basic/cryptonote_basic.cpp ../src/cryptonote_basic/cryptonote_format_utils.cpp
+COMMON_SOURCES = ../src/common/string_tools.cpp ../src/common/util.cpp
+CRYPTO_SOURCES = ../src/crypto/hash.cpp ../src/crypto/crypto.cpp ../src/crypto/blake256.cpp ../src/crypto/groestl.cpp ../src/crypto/jh.cpp ../src/crypto/skein.cpp ../src/crypto/keccak.cpp ../src/crypto/sha512.cpp
+
+# Test executable
+TARGET = consensus_validation_test
+
+.PHONY: all clean test
+
+all: $(TARGET)
+
+$(TARGET): consensus_validation_test.cpp
+	@echo "Building consensus validation test..."
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -o $(TARGET) consensus_validation_test.cpp $(CONSENSUS_SOURCES) $(CORE_SOURCES) $(BASIC_SOURCES) $(COMMON_SOURCES) $(CRYPTO_SOURCES) $(LIBS)
+	@echo "✅ Build complete"
+
+test: $(TARGET)
+	@echo "Running consensus validation tests..."
+	./$(TARGET)
+
+clean:
+	rm -f $(TARGET)
+	@echo "✅ Clean complete"
+
+help:
+	@echo "Available targets:"
+	@echo "  all    - Build the consensus validation test"
+	@echo "  test   - Build and run the tests"
+	@echo "  clean  - Remove built files"
+	@echo "  help   - Show this help message"
