@@ -72,15 +72,9 @@ bool rx_slow_hash(const char* seed_hash, const void* data, size_t length, crypto
         randomx_init_cache(g_rx_cache->cache, seed_hash, 32);
     }
 
-    // Create dataset and VM
-    randomx_dataset* dataset = randomx_alloc_dataset(RANDOMX_FLAG_DEFAULT);
-    if (!dataset) {
-        return false;
-    }
-
-    randomx_vm* vm = randomx_create_vm(RANDOMX_FLAG_DEFAULT, g_rx_cache->cache, dataset, nullptr);
+    // Create VM (no dataset needed for simple hashing)
+    randomx_vm* vm = randomx_create_vm(RANDOMX_FLAG_DEFAULT, g_rx_cache->cache, nullptr);
     if (!vm) {
-        randomx_release_dataset(dataset);
         return false;
     }
 
@@ -89,7 +83,6 @@ bool rx_slow_hash(const char* seed_hash, const void* data, size_t length, crypto
 
     // Cleanup
     randomx_destroy_vm(vm);
-    randomx_release_dataset(dataset);
 
     return true;
 }
