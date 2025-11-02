@@ -200,6 +200,9 @@
 #define HF_VERSION_VIEW_TAGS                    15
 #define HF_VERSION_2021_SCALING                 15
 
+// Xwift: Hard fork for mandatory ring size 16
+#define HF_VERSION_RING_SIZE_16                 1  // Mandatory ring size 16 from block 1 (genesis)
+
 #define PER_KB_FEE_QUANTIZATION_DECIMALS        8
 #define CRYPTONOTE_SCALING_2021_FEE_ROUNDING_PLACES 2
 
