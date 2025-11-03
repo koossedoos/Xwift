@@ -208,7 +208,7 @@ echo
 echo -e "${BLUE}🔄 NEXT STEPS:${NC}"
 echo "  1. Build the project: make -j\$(nproc) or cmake && make"
 echo "  2. Run unit tests: make test"
-echo "  3. Start daemon: ./build/bin/xwift-daemon --testnet --offline"
+echo "  3. Start daemon: ./build/bin/xwift-daemon --testnet --offline --rpc-bind-port 29081 --p2p-bind-port 29080 --zmq-rpc-bind-port 29082"
 echo "  4. Run validation scripts:"
 echo "     - ./test_phase1_genesis.sh"
 echo "     - ./test_phase2_wallet.sh"
