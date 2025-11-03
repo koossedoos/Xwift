@@ -451,8 +451,11 @@ sudo apt install libboost-all-dev
 ```bash
 # Issue: Daemon won't start (port in use)
 # Solution: Check for conflicting processes
-netstat -tlnp | grep :19081
+netstat -tlnp | grep :29081
 sudo kill -9 <PID>
+
+# Or use the cleanup script:
+./scripts/stop_xwift.sh
 
 # Issue: Permission denied on data directory
 # Solution: Fix permissions
