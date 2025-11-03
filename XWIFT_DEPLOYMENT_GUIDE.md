@@ -232,7 +232,41 @@ EOF
 
 ## 🚀 Testnet Deployment
 
-### 1. Initialize Testnet Blockchain
+### 1. Using Deployment Scripts (Recommended)
+
+The easiest way to start Xwift testnet is to use the provided deployment scripts:
+
+```bash
+# Navigate to Xwift directory
+cd ~/Xwift
+
+# Start daemon with correct configuration
+./scripts/start_xwift_testnet.sh
+
+# The script will handle:
+# - Clean shutdown of existing daemons
+# - Port availability checking
+# - Data directory setup
+# - Daemon startup with correct parameters
+# - RPC connectivity verification
+```
+
+#### Manual Daemon Management
+
+```bash
+# Stop daemon cleanly
+./scripts/stop_xwift.sh
+
+# Restart daemon
+./scripts/start_xwift_testnet.sh
+
+# Run deployment validation
+./validate_deployment.sh
+```
+
+### 2. Manual Deployment (Alternative)
+
+If you prefer manual deployment, follow these steps:
 ```bash
 # Navigate to Xwift build directory
 cd ~/Xwift/build
