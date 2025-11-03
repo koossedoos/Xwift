@@ -462,7 +462,7 @@ echo "Phase 3 completed! Xwift mining system is ready for testing."
 echo
 echo "Next steps:"
 echo "1. Build daemon with mining: make release"
-echo "2. Start daemon: ./xwift-daemon --testnet --rpc-bind-port 19081"
+echo "2. Start daemon: ./xwift-daemon --testnet --rpc-bind-port 29081"
 echo "3. Run mining tests: cd test_mining && ./test_mining_rpc.sh"
 echo "4. Test solo mining with wallet address"
 echo "5. Validate block generation and rewards"
