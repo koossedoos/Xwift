@@ -296,8 +296,8 @@ namespace config
       } }; // Xwift-Test-Genes (XFT Testnet UUID)
     // Xwift testnet: Genesis TX - TBD
     std::string const GENESIS_TX = "013c01ff0001ffffffffffff03029b2e4c0281c0b02e7c53291a94d1d0cbff8883f8024f5142ee494ffbbd08807121017767aafcde9be00dcfd098715ebcf7f410daebc582fda69d24a28e9d0bc890d1";
-    // Xwift testnet: Genesis nonce - TBD
-    uint32_t const GENESIS_NONCE = 0;
+    // Xwift testnet: Genesis nonce - set to non-zero value to prevent initialization failure
+    uint32_t const GENESIS_NONCE = 42;
   }
 
   namespace stagenet
