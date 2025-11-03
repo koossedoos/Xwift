@@ -318,13 +318,13 @@ chmod +x test_*.sh
 #### Daemon Tests ✅
 ```bash
 # Test 1: Daemon Status
-curl -s http://127.0.0.1:19081/json_rpc \
+curl -s http://127.0.0.1:29081/json_rpc \
     -d '{"jsonrpc":"2.0","id":"1","method":"get_info"}' | jq '.result'
 
 # Expected: height=1, testnet=true, offline=false
 
 # Test 2: Genesis Block Verification
-curl -s http://127.0.0.1:19081/json_rpc \
+curl -s http://127.0.0.1:29081/json_rpc \
     -d '{"jsonrpc":"2.0","id":"1","method":"get_block","params":{"height":0}}' | jq '.result.block.hash'
 
 # Expected: Should match the known genesis hash
