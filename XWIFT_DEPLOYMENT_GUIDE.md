@@ -181,10 +181,10 @@ testnet=1
 data-dir=~/.xwift/testnet
 log-level=1
 
-# Network Configuration
-p2p-bind-port=19080
-rpc-bind-port=19081
-zmq-rpc-bind-port=19082
+# Network Configuration (Updated for testnet)
+p2p-bind-port=29080
+rpc-bind-port=29081
+zmq-rpc-bind-port=29082
 
 # RPC Configuration
 restricted-rpc=1
