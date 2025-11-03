@@ -284,8 +284,8 @@ curl -s http://127.0.0.1:29081/json_rpc \
     --testnet \
     --wallet-file ~/.xwift/testnet/wallet \
     --password test123 \
-    --rpc-bind-port 19083 \
-    --daemon-address 127.0.0.1:19081 \
+    --rpc-bind-port 29083 \
+    --daemon-address 127.0.0.1:29081 \
     --allow-cors '*'
 
 # Test wallet RPC
