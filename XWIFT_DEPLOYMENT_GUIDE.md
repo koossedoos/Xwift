@@ -345,11 +345,11 @@ curl -s http://127.0.0.1:29081/json_rpc \
 #### Mining Tests ✅
 ```bash
 # Test 1: Start Mining
-curl -s http://127.0.0.1:19081/json_rpc \
+curl -s http://127.0.0.1:29081/json_rpc \
     -d '{"jsonrpc":"2.0","id":"1","method":"start_mining","params":{"threads_count":2}}' | jq '.result'
 
 # Test 2: Mining Status
-curl -s http://127.0.0.1:19081/json_rpc \
+curl -s http://127.0.0.1:29081/json_rpc \
     -d '{"jsonrpc":"2.0","id":"1","method":"mining_status"}' | jq '.result'
 
 # Expected: active=true, threads=2
