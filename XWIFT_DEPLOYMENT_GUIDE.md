@@ -289,7 +289,7 @@ curl -s http://127.0.0.1:29081/json_rpc \
     --allow-cors '*'
 
 # Test wallet RPC
-curl -s http://127.0.0.1:19083/json_rpc \
+curl -s http://127.0.0.1:29083/json_rpc \
     -d '{"jsonrpc":"2.0","id":"1","method":"get_address"}' \
     -H "Content-Type: application/json" | python3 -m json.tool
 ```
