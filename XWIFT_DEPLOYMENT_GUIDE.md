@@ -368,8 +368,8 @@ curl -s http://127.0.0.1:29081/json_rpc \
 ### 4. Validation Results Expected
 ```
 ✅ Genesis block hash: 48ca7cd3c8de5b6a4d53d2861fbdaedca141553559f9be9520068053cda8430b
-✅ Daemon RPC: Responding on port 19081
-✅ Wallet RPC: Responding on port 19083
+✅ Daemon RPC: Responding on port 29081
+✅ Wallet RPC: Responding on port 29083
 ✅ Mining: Active with 10-second block target
 ✅ Consensus: Xwift rules active
 ✅ Currency: XFT ticker displayed
