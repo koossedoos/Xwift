@@ -525,15 +525,15 @@ netstat -an | grep :1908
 ### Xwift Metrics
 ```bash
 # Get daemon info
-curl -s http://127.0.0.1:19081/json_rpc \
+curl -s http://127.0.0.1:29081/json_rpc \
     -d '{"jsonrpc":"2.0","id":"1","method":"get_info"}' | jq '.result'
 
 # Get mining status
-curl -s http://127.0.0.1:19081/json_rpc \
+curl -s http://127.0.0.1:29081/json_rpc \
     -d '{"jsonrpc":"2.0","id":"1","method":"mining_status"}' | jq '.result'
 
 # Get network info
-curl -s http://127.0.0.1:19081/json_rpc \
+curl -s http://127.0.0.1:29081/json_rpc \
     -d '{"jsonrpc":"2.0","id":"1","method":"get_net_stats"}' | jq '.result'
 ```
 
