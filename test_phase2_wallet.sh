@@ -311,7 +311,7 @@ cat > "$WALLET_DIR/test_wallet_rpc.sh" << 'EOF'
 
 set -e
 
-WALLET_RPC="http://127.0.0.1:19083"
+WALLET_RPC="http://127.0.0.1:29083"
 WALLET_FILE="test_wallet"
 WALLET_PASSWORD="test123"
 
