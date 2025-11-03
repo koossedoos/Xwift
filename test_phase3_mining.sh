@@ -312,7 +312,7 @@ echo "Testing Xwift Mining RPC..."
 # Test if daemon RPC is running
 if ! curl -s "$DAEMON_RPC/json_rpc" -d '{"jsonrpc":"2.0","id":"1","method":"get_info"}' -H "Content-Type: application/json" > /dev/null; then
     echo "❌ Daemon RPC not responding on $DAEMON_RPC"
-    echo "Start daemon with: ./xwift-daemon --testnet --rpc-bind-port 19081"
+    echo "Start daemon with: ./xwift-daemon --testnet --rpc-bind-port 29081"
     exit 1
 fi
 
