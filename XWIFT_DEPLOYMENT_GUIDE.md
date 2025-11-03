@@ -482,7 +482,7 @@ chown -R $USER:$USER ~/.xwift
 
 # Issue: Cannot connect to daemon
 # Solution: Check daemon address
-./bin/xwift-wallet-cli --testnet --daemon-address 127.0.0.1:19081
+./bin/xwift-wallet-cli --testnet --daemon-address 127.0.0.1:29081
 ```
 
 ### Log Files
