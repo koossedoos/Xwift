@@ -18,7 +18,7 @@ echo "1. Checking if daemon is running..."
 if ! curl -s "$DAEMON_RPC/json_rpc" -d '{"jsonrpc":"2.0","id":"1","method":"get_info"}' -H "Content-Type: application/json" > /dev/null; then
     echo "❌ Daemon is not responding on $DAEMON_RPC"
     echo "Please start the daemon with:"
-    echo "cd ~/Xwift/build/bin && ./xwift-daemon --testnet --data-dir ~/.xwift/testnet --offline --rpc-bind-port 19081 --p2p-bind-port 19080 --zmq-rpc-bind-port 19082"
+    echo "cd ~/Xwift/build/bin && ./xwift-daemon --testnet --data-dir ~/.xwift/testnet --offline --rpc-bind-port 29081 --p2p-bind-port 29080 --zmq-rpc-bind-port 29082"
     exit 1
 fi
 
