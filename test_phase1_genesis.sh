@@ -9,7 +9,7 @@ echo "=== Xwift Ecosystem Testing - Phase 1: Genesis & Consensus ==="
 echo
 
 # Configuration
-DAEMON_RPC="http://127.0.0.1:19081"
+DAEMON_RPC="http://127.0.0.1:29081"
 EXPECTED_GENESIS_HASH="48ca7cd3c8de5b6a4d53d2861fbdaedca141553559f9be9520068053cda8430b"
 DATA_DIR="$HOME/.xwift/testnet"
 
