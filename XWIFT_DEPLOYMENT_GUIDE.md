@@ -471,7 +471,7 @@ chown -R $USER:$USER ~/.xwift
 
 # Issue: CORS errors in browser
 # Solution: Restart daemon with CORS allowed
-./bin/xwift-daemon --rpc-bind-port 19081 --confirm-external-bind
+./bin/xwift-daemon --rpc-bind-port 29081 --confirm-external-bind
 ```
 
 #### 4. Wallet Issues
