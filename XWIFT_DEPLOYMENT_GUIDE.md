@@ -416,7 +416,26 @@ curl -s http://127.0.0.1:29081/json_rpc \
 
 ### Common Issues & Solutions
 
-#### 1. Build Errors
+#### 1. Genesis Block and Port Issues (Fixed)
+
+```bash
+# Issue: "Failed to add genesis block to blockchain"
+# Solution: Fixed with genesis nonce = 42 in src/cryptonote_config.h:300
+# The updated code resolves this error automatically
+
+# Issue: Port conflicts (19081 vs 29081)
+# Solution: All configurations now use correct testnet ports:
+# - P2P: 29080
+# - RPC: 29081
+# - ZMQ: 29082
+# - Wallet RPC: 29083
+
+# Use the deployment scripts to avoid port conflicts:
+./scripts/start_xwift_testnet.sh
+./scripts/stop_xwift.sh
+```
+
+#### 2. Build Errors
 ```bash
 # Issue: Missing dependencies
 # Solution: Install all required packages
