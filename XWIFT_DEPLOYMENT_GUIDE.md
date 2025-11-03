@@ -267,12 +267,12 @@ cd ~/Xwift/build
 ./bin/xwift-daemon \
     --testnet \
     --data-dir ~/.xwift/testnet \
-    --rpc-bind-port 19081 \
-    --p2p-bind-port 19080 \
-    --zmq-rpc-bind-port 19082
+    --rpc-bind-port 29081 \
+    --p2p-bind-port 29080 \
+    --zmq-rpc-bind-port 29082
 
 # In a separate terminal, test RPC connectivity
-curl -s http://127.0.0.1:19081/json_rpc \
+curl -s http://127.0.0.1:29081/json_rpc \
     -d '{"jsonrpc":"2.0","id":"1","method":"get_info"}' \
     -H "Content-Type: application/json" | python3 -m json.tool
 ```
