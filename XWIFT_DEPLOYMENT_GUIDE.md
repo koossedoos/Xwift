@@ -242,9 +242,9 @@ cd ~/Xwift/build
     --testnet \
     --data-dir ~/.xwift/testnet \
     --offline \
-    --rpc-bind-port 19081 \
-    --p2p-bind-port 19080 \
-    --zmq-rpc-bind-port 19082
+    --rpc-bind-port 29081 \
+    --p2p-bind-port 29080 \
+    --zmq-rpc-bind-port 29082
 
 # Let it run for 30 seconds to initialize, then stop with Ctrl+C
 ```
