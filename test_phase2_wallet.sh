@@ -9,7 +9,7 @@ echo "=== Xwift Ecosystem Testing - Phase 2: Wallet System ==="
 echo
 
 # Configuration
-DAEMON_RPC="http://127.0.0.1:19081"
+DAEMON_RPC="http://127.0.0.1:29081"
 WALLET_DIR="./test_wallets"
 WALLET_NAME="xwift_test_wallet"
 
