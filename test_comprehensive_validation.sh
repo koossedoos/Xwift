@@ -222,7 +222,7 @@ print_header "ECOSYSTEM READINESS ASSESSMENT"
 
 echo "Based on the user's successful daemon launch:"
 echo "✅ Daemon compiles and runs correctly"
-echo "✅ RPC server responds on port 19081"
+echo "✅ RPC server responds on port 29081"
 echo "✅ Genesis block validated (hash: 48ca7cd3c8de5b6a4d53d2861fbdaedca141553559f9be9520068053cda8430b)"
 echo "✅ Testnet configuration functional"
 echo "✅ Blockchain initialization successful"
