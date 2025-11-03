@@ -320,7 +320,7 @@ echo "Testing Xwift Wallet RPC..."
 # Test if wallet RPC is running
 if ! curl -s "$WALLET_RPC/json_rpc" -d '{"jsonrpc":"2.0","id":"1","method":"get_version"}' -H "Content-Type: application/json" > /dev/null; then
     echo "❌ Wallet RPC not responding on $WALLET_RPC"
-    echo "Start wallet RPC with: ./xwift-wallet-rpc --rpc-bind-port 19083 --testnet"
+    echo "Start wallet RPC with: ./xwift-wallet-rpc --rpc-bind-port 29083 --testnet"
     exit 1
 fi
 
