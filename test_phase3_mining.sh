@@ -9,7 +9,7 @@ echo "=== Xwift Ecosystem Testing - Phase 3: Mining System ==="
 echo
 
 # Configuration
-DAEMON_RPC="http://127.0.0.1:19081"
+DAEMON_RPC="http://127.0.0.1:29081"
 MINING_DIR="./test_mining"
 
 echo "1. Creating mining test directory..."
