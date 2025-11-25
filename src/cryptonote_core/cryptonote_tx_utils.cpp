@@ -105,36 +105,6 @@ namespace cryptonote
 #endif
     block_reward += fee;
 
-    // Development Fund Logic (2% for first year)
-    uint64_t dev_fund_amount = 0;
-    account_public_address dev_fund_address = AUTO_VAL_INIT(dev_fund_address);
-    bool has_dev_fund = false;
-
-    if (height <= config::DEV_FUND_DURATION_BLOCKS && strlen(config::DEV_FUND_ADDRESS) > 0) {
-      // Calculate 2% of block reward for dev fund
-      dev_fund_amount = (block_reward * config::DEV_FUND_PERCENTAGE) / 100;
-
-      // Parse dev fund address
-      cryptonote::address_parse_info dev_info;
-      if (cryptonote::get_account_address_from_str(dev_info, MAINNET, config::DEV_FUND_ADDRESS)) {
-        dev_fund_address = dev_info.address;
-        has_dev_fund = true;
-        block_reward -= dev_fund_amount; // Miner gets the remaining amount
-
-        // Enhanced logging for dev fund allocation
-        uint64_t remaining_blocks = config::DEV_FUND_DURATION_BLOCKS - height;
-        float progress_percent = (float(height) / config::DEV_FUND_DURATION_BLOCKS) * 100.0f;
-        LOG_PRINT_L1("Dev fund allocated: " << dev_fund_amount << " atomic units ("
-                     << (dev_fund_amount / 100000000.0) << " XFT) at height " << height
-                     << " (" << std::fixed << std::setprecision(2) << progress_percent << "% through dev fund period, "
-                     << remaining_blocks << " blocks remaining)");
-      } else {
-        LOG_ERROR("Failed to parse development fund address, skipping dev fund allocation");
-      }
-    } else if (height == config::DEV_FUND_DURATION_BLOCKS + 1) {
-      LOG_PRINT_L0("Development fund period has ended at block " << height);
-    }
-
     // from hard fork 2, we cut out the low significant digits. This makes the tx smaller, and
     // keeps the paid amount almost the same. The unpaid remainder gets pushed back to the
     // emission schedule
@@ -194,34 +164,7 @@ namespace cryptonote
       tx.vout.push_back(out);
     }
 
-    // Add development fund output if applicable
-    if (has_dev_fund && dev_fund_amount > 0) {
-      size_t dev_output_index = out_amounts.size();
-
-      crypto::key_derivation dev_derivation = AUTO_VAL_INIT(dev_derivation);
-      crypto::public_key dev_out_eph_public_key = AUTO_VAL_INIT(dev_out_eph_public_key);
-      bool r = crypto::generate_key_derivation(dev_fund_address.m_view_public_key, txkey.sec, dev_derivation);
-      CHECK_AND_ASSERT_MES(r, false, "while creating dev fund out: failed to generate_key_derivation");
-
-      r = crypto::derive_public_key(dev_derivation, dev_output_index, dev_fund_address.m_spend_public_key, dev_out_eph_public_key);
-      CHECK_AND_ASSERT_MES(r, false, "while creating dev fund out: failed to derive_public_key");
-
-      summary_amounts += dev_fund_amount;
-
-      bool use_view_tags = hard_fork_version >= HF_VERSION_VIEW_TAGS;
-      crypto::view_tag view_tag;
-      if (use_view_tags)
-        crypto::derive_view_tag(dev_derivation, dev_output_index, view_tag);
-
-      tx_out dev_out;
-      cryptonote::set_tx_out(dev_fund_amount, dev_out_eph_public_key, use_view_tags, view_tag, dev_out);
-      tx.vout.push_back(dev_out);
-
-      LOG_PRINT_L1("Development fund output added: " << dev_fund_amount << " atomic units");
-    }
-
-    uint64_t expected_total = block_reward + (has_dev_fund ? dev_fund_amount : 0);
-    CHECK_AND_ASSERT_MES(summary_amounts == expected_total, false, "Failed to construct miner tx, summary_amounts = " << summary_amounts << " not equal expected_total = " << expected_total);
+    CHECK_AND_ASSERT_MES(summary_amounts == block_reward, false, "Failed to construct miner tx, summary_amounts = " << summary_amounts << " not equal block_reward = " << block_reward);
 
     if (hard_fork_version >= 4)
       tx.version = 2;
@@ -765,7 +708,7 @@ namespace cryptonote
   bool get_block_longhash(const Blockchain *pbc, const block& b, crypto::hash& res, const uint64_t height, const crypto::hash *seed_hash, const int miners)
   {
     blobdata bd = get_block_hashing_blob(b);
-	return get_block_longhash(pbc, bd, res, height, b.major_version, seed_hash, miners);
+    return get_block_longhash(pbc, bd, res, height, b.major_version, seed_hash, miners);
   }
 
   crypto::hash get_block_longhash(const Blockchain *pbc, const block& b, const uint64_t height, const crypto::hash *seed_hash, const int miners)

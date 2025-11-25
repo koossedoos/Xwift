@@ -224,11 +224,6 @@ namespace config
   uint64_t const DEFAULT_DUST_THRESHOLD = ((uint64_t)200000); // 0.002 XWIFT dust threshold
   uint64_t const BASE_REWARD_CLAMP_THRESHOLD = ((uint64_t)50000000); // 0.5 XWIFT minimum reward
 
-  // Development Fund Configuration
-  const uint64_t DEV_FUND_PERCENTAGE = 2;  // 2% of block reward
-  const uint64_t DEV_FUND_DURATION_BLOCKS = 1051200;  // 1 year at 30-second blocks (365.25 * 24 * 60 * 2)
-  const char DEV_FUND_ADDRESS[] = "DEVELOPMENT_FUND_ADDRESS_TO_BE_SET";  // Set your address here before launch
-
   uint64_t const CRYPTONOTE_PUBLIC_ADDRESS_BASE58_PREFIX = 65;
   uint64_t const CRYPTONOTE_PUBLIC_INTEGRATED_ADDRESS_BASE58_PREFIX = 66;
   uint64_t const CRYPTONOTE_PUBLIC_SUBADDRESS_BASE58_PREFIX = 67;
