@@ -51,9 +51,18 @@
 #define BLOCKCHAIN_TIMESTAMP_CHECK_WINDOW               15  // 7.5 minutes (15 blocks * 30 seconds) - CRITICAL #6: Prevents timestamp manipulation attacks, matches new difficulty window scale
 
 // MONEY_SUPPLY - total number coins to be generated before tail emission
-#define MONEY_SUPPLY                                    ((uint64_t)(-1)) // Unlimited supply (tail emission continues forever)
-#define EMISSION_SPEED_FACTOR_PER_MINUTE                (20)  // Emission speed - 108.8M will be distributed before tail kicks in
-#define FINAL_SUBSIDY_PER_MINUTE                        ((uint64_t)1800000000) // 18 XWIFT per minute tail emission baseline
+#define MONEY_SUPPLY                                    ((uint64_t)(-1)) // Unlimited supply - 72.5M base coins over 8 years, then perpetual tail emission
+#define EMISSION_SPEED_FACTOR_PER_MINUTE                (20)  // Adjusted for 8-year base supply phase (72.5M coins total)
+#define FINAL_SUBSIDY_PER_MINUTE                        ((uint64_t)240000000) // Perpetual tail emission: 1.2 XWIFT per block (30s), 2.4 XWIFT per minute, ~3,456 XWIFT per day
+// EMISSION SCHEDULE (8-year base + perpetual tail):
+// Base Phase: 0-8,409,600 blocks (~8 years at 30s blocks)
+//   - Total: 72,500,000 XWIFT via exponential decay
+//   - Average ~8.6 XWIFT per block (higher early, decaying over 8 years)
+//   - Daily output: Starts ~24,870 XWIFT/day, decays to ~6,912 XWIFT/day
+// Tail Phase: Block 8,409,601+ (perpetual)
+//   - Fixed: 1.2 XWIFT per block
+//   - Daily: 3,456 XWIFT per day forever
+//   - Annual at tail: ~1,261,440 XWIFT per year (stable forever)
 
 #define CRYPTONOTE_REWARD_BLOCKS_WINDOW                 100
 #define CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE_V2    60000 //size of block (bytes) after which reward for block calculated using block size
@@ -77,7 +86,7 @@
 #define ORPHANED_BLOCKS_MAX_COUNT                       100
 
 
-#define DIFFICULTY_TARGET_V2                            30  // seconds - 30-second blocks
+#define DIFFICULTY_TARGET_V2                            30  // seconds - 30-second block time = 2,880 blocks/day (~1,051,200/year)
 #define DIFFICULTY_TARGET_V1                            15  // seconds - before first fork
 #define DIFFICULTY_WINDOW                               72  // 36 minutes of adjustment history (72 blocks * 30 seconds) - CRITICAL #4: Reduces oscillation, prevents time-warp attacks, reduces orphan rate from 20-30% to <5%
 #define DIFFICULTY_LAG                                  3   // 1.5 minutes (3 blocks * 30 seconds) - Smooths difficulty adjustment, prevents wild swings
