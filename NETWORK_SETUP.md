@@ -58,9 +58,9 @@ cd xwift
 make release -j$(nproc)
 
 # Optional: strip binary to reduce size
-strip build/release/bin/monerod
+strip build/release/bin/xwiftd
 
-sudo install -o root -g root -m 755 build/release/bin/monerod /usr/local/bin/xwiftseed
+sudo install -o root -g root -m 755 build/release/bin/xwiftd /usr/local/bin/xwiftseed
 sudo mkdir -p /var/lib/xwiftseed
 sudo chown xwift:xwift /var/lib/xwiftseed
 ```
@@ -117,7 +117,7 @@ Once the nodes are live:
 ## 7. Seed Node Operations Checklist
 - Monitor disk usage and prune old log files.
 - Keep the OS patched (`unattended-upgrades` or Ansible).
-- Use `monerod --log-level 1` (or via systemd) for manageable log sizes.
+- Use `xwiftd --log-level 1` (or via systemd) for manageable log sizes.
 - Periodically restart during maintenance windows to apply binary updates.
 
 ## 8. P2P Configuration Reference
@@ -145,7 +145,7 @@ These values are defined in `src/cryptonote_config.h` and should only be modifie
 
 If every hardcoded seed fails, instruct testers to connect manually:
 ```bash
-monerod --add-priority-node seed1.xwift.testnet:19080
+xwiftd --add-priority-node seed1.xwift.testnet:19080
 ```
 This immediately places the seed in the outbound peer set and triggers peerlist syncing.
 

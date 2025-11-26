@@ -58,8 +58,9 @@ make release -j$(nproc)
 
 #### 2. Install Binaries
 ```bash
-sudo cp build/Linux/compyle_xwift-deploy-testnet-mainnet/release/bin/monerod /usr/local/bin/
-sudo cp build/Linux/compyle_xwift-deploy-testnet-mainnet/release/bin/monero-wallet-cli /usr/local/bin/
+sudo cp build/Linux/compyle_xwift-deploy-testnet-mainnet/release/bin/xwiftd /usr/local/bin/
+sudo cp build/Linux/compyle_xwift-deploy-testnet-mainnet/release/bin/xwift-wallet-cli /usr/local/bin/
+sudo cp build/Linux/compyle_xwift-deploy-testnet-mainnet/release/bin/xwift-wallet-rpc /usr/local/bin/
 ```
 
 #### 3. Create System User
@@ -154,12 +155,12 @@ sudo systemctl status xwift-testnet
 
 ### Create Testnet Wallet
 ```bash
-monero-wallet-cli --testnet --generate-wallet xwift-test-wallet
+xwift-wallet-cli --testnet --generate-wallet xwift-test-wallet
 ```
 
 ### Create Mainnet Wallet
 ```bash
-monero-wallet-cli --generate-wallet xwift-main-wallet
+xwift-wallet-cli --generate-wallet xwift-main-wallet
 ```
 
 ## Network Verification
@@ -169,17 +170,17 @@ The following commands should return different results, confirming network separ
 
 ```bash
 # Mainnet genesis block
-curl -s http://localhost:18081/get_info | jq '.genesis_block_hash'
+curl -s http://localhost:19081/get_info | jq '.genesis_block_hash'
 
 # Testnet genesis block
-curl -s http://localhost:28081/get_info | jq '.genesis_block_hash'
+curl -s http://localhost:29081/get_info | jq '.genesis_block_hash'
 ```
 
 ### Verify Address Prefixes
 ```bash
 # Testnet address should start with different prefix than mainnet
-monero-wallet-cli --testnet --address
-monero-wallet-cli --address
+xwift-wallet-cli --testnet --address
+xwift-wallet-cli --address
 ```
 
 ## Security Considerations
