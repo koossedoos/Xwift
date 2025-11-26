@@ -927,6 +927,13 @@ difficulty_type Blockchain::get_difficulty_for_next_block()
   CRITICAL_REGION_LOCAL1(m_difficulty_lock);
   m_difficulty_for_next_block_top_hash = top_hash;
   m_difficulty_for_next_block = diff;
+  
+  uint64_t hashrate_estimate = diff / target;
+  MINFO("Network Health: Difficulty adjustment - height=" << height 
+        << ", new_difficulty=" << diff 
+        << ", hashrate_estimate=" << hashrate_estimate << " H/s"
+        << ", target=" << target << "s");
+  
   return diff;
 }
 //------------------------------------------------------------------

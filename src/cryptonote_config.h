@@ -69,7 +69,7 @@
 #define CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE_V1    20000 //size of block (bytes) after which reward for block calculated using block size - before first fork
 #define CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE_V5    300000 //size of block (bytes) after which reward for block calculated using block size - second change, from v5
 #define CRYPTONOTE_LONG_TERM_BLOCK_WEIGHT_WINDOW_SIZE   100000 // size in blocks of the long term block weight median window
-#define CRYPTONOTE_SHORT_TERM_BLOCK_WEIGHT_SURGE_FACTOR 50
+#define CRYPTONOTE_SHORT_TERM_BLOCK_WEIGHT_SURGE_FACTOR 10
 #define CRYPTONOTE_COINBASE_BLOB_RESERVED_SIZE          600
 #define CRYPTONOTE_DISPLAY_DECIMAL_POINT                8
 // COIN - number of smallest units in one coin
@@ -207,7 +207,7 @@
 
 #define HASH_OF_HASHES_STEP                     512
 
-#define DEFAULT_TXPOOL_MAX_WEIGHT               648000000ull // 3 days at 300000, in bytes
+#define DEFAULT_TXPOOL_MAX_WEIGHT               216000000ull // 1 day at 300KB blocks (mitigates spam attacks on 30-second blockchain)
 
 #define BULLETPROOF_MAX_OUTPUTS                 16
 #define BULLETPROOF_PLUS_MAX_OUTPUTS            16
@@ -277,18 +277,26 @@ namespace config
 
   namespace testnet
   {
-    uint64_t const CRYPTONOTE_PUBLIC_ADDRESS_BASE58_PREFIX = 85;
-    uint64_t const CRYPTONOTE_PUBLIC_INTEGRATED_ADDRESS_BASE58_PREFIX = 86;
-    uint64_t const CRYPTONOTE_PUBLIC_SUBADDRESS_BASE58_PREFIX = 87;
-    uint16_t const P2P_DEFAULT_PORT = 29080;  // Changed from 28080 to avoid conflicts
-    uint16_t const RPC_DEFAULT_PORT = 29081;  // Changed from 28081 to avoid conflicts
-    uint16_t const ZMQ_RPC_DEFAULT_PORT = 29082;  // Changed from 29082 to avoid conflicts
+    // Testnet Configuration: Separate network for testing without risking mainnet funds
+    // Base58 address prefixes distinguish testnet addresses from mainnet (avoid accidental sends)
+    uint64_t const CRYPTONOTE_PUBLIC_ADDRESS_BASE58_PREFIX = 85;              // Testnet standard address prefix (vs 65 mainnet)
+    uint64_t const CRYPTONOTE_PUBLIC_INTEGRATED_ADDRESS_BASE58_PREFIX = 86;   // Testnet integrated address prefix (vs 66 mainnet)
+    uint64_t const CRYPTONOTE_PUBLIC_SUBADDRESS_BASE58_PREFIX = 87;           // Testnet subaddress prefix (vs 67 mainnet)
+    
+    // Network ports offset by 10000 from mainnet to prevent cross-network interference
+    uint16_t const P2P_DEFAULT_PORT = 29080;      // Testnet P2P port (mainnet: 19080)
+    uint16_t const RPC_DEFAULT_PORT = 29081;      // Testnet RPC port (mainnet: 19081)
+    uint16_t const ZMQ_RPC_DEFAULT_PORT = 29082;  // Testnet ZMQ port (mainnet: 19082)
+    
+    // Unique network ID prevents testnet/mainnet node cross-communication
     boost::uuids::uuid const NETWORK_ID = { {
         0x58, 0x57, 0x49, 0x46, 0x54, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02  // Last byte 0x02 = testnet (0x01 = mainnet)
       } }; // XWIFT testnet
+    
+    // Testnet genesis block (different from mainnet to create separate blockchain)
     std::string const GENESIS_TX = "013c01ff0001ffffffffffff03029b2e4c0281c0b02e7c53291a94d1d0cbff8883f8024f5142ee494ffbbd08807121017767aafcde9be00dcfd098715ebcf7f410daebc582fda69d24a28e9d0bc890d1";
-    uint32_t const GENESIS_NONCE = 10004;
+    uint32_t const GENESIS_NONCE = 10004;  // Unique nonce for testnet genesis block (mainnet: 10003)
   }
 
   namespace stagenet

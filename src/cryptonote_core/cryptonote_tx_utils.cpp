@@ -103,6 +103,12 @@ namespace cryptonote
     LOG_PRINT_L1("Creating block template: reward " << block_reward <<
       ", fee " << fee);
 #endif
+    
+    LOG_PRINT_L1("Network Health: Block creation - height=" << height 
+                 << ", reward=" << cryptonote::print_money(block_reward) 
+                 << " XWIFT, fee=" << cryptonote::print_money(fee) 
+                 << " XWIFT, total=" << cryptonote::print_money(block_reward + fee) << " XWIFT");
+    
     block_reward += fee;
 
     // from hard fork 2, we cut out the low significant digits. This makes the tx smaller, and
