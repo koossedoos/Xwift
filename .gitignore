@@ -118,3 +118,17 @@ nbproject
 __pycache__/
 *.pyc
 *.log
+
+# Testnet deployment artifacts
+/testnet-deployment/logs/
+/testnet-deployment/data/
+/testnet-deployment/deployment-status.log
+/testnet-deployment/deployment-*.log
+/testnet-deployment/seed-nodes-inventory.txt
+/testnet-deployment/reports/FINAL_VALIDATION_REPORT.md
+/testnet-deployment/reports/deployment-report-*.md
+/testnet-deployment/reports/metrics-*.json
+/testnet-deployment/reports/orphan-rate-*.log
+/testnet-deployment/reports/difficulty-*.csv
+/testnet-deployment/reports/block-propagation-*.csv
+/testnet-deployment/reports/automation-*.log
