@@ -83,6 +83,18 @@ Last Updated: 2025-01-03
   - Deployment quick start
   - Critical steps before launch
 
+- **[TESTNET_VALIDATION_GUIDE.md](TESTNET_VALIDATION_GUIDE.md)** (23KB)
+  - Comprehensive 30-day validation plan
+  - Validator setup, stress tests, measurement scripts
+  - Difficulty/orphan/emission verification procedures
+  - Success criteria for mainnet go/no-go decisions
+
+- **[DEPLOYMENT_CHECKLIST.md](DEPLOYMENT_CHECKLIST.md)** (22KB)
+  - Pre-testnet & pre-mainnet gates
+  - Binary verification, security audit, seed node rollout
+  - Exchange/wallet integration checklist
+  - Launch day and post-launch monitoring procedures
+
 **Development:**
 - **[IMPLEMENTATION_SUMMARY.md](IMPLEMENTATION_SUMMARY.md)** (10KB)
   - Summary of all code changes made
@@ -96,6 +108,24 @@ Last Updated: 2025-01-03
   - Network identity, economics, parameters
   - Comparison tables (Xwift vs Monero)
   - Proof of differentiation
+
+- **[CONSENSUS_CHANGES_SUMMARY.md](CONSENSUS_CHANGES_SUMMARY.md)** (11KB)
+  - All consensus-level modifications from Monero
+  - 30s blocks, 72-block difficulty, 60-block maturity
+  - Timestamp, emission, and P2P changes
+  - Testing recommendations, integration notes
+
+- **[EMISSION_SCHEDULE.md](EMISSION_SCHEDULE.md)** (17KB)
+  - Detailed 8-year base supply + tail emission explanation
+  - Block-by-block, daily, monthly, yearly distributions
+  - Formula derivation, verification scripts
+  - Economic analysis, comparison to other projects
+
+- **[EMERGENCY_FORK_GUIDE.md](EMERGENCY_FORK_GUIDE.md)** (16KB)
+  - Repeatable emergency hard fork playbook
+  - Incident detection, triage, code fix, release, monitoring
+  - Validator coordination, rollback, comms templates
+  - Post-incident checklist and lessons learned
 
 ---
 
@@ -144,12 +174,13 @@ Last Updated: 2025-01-03
 2. **[XWIFT_SPECIFICATIONS.md](XWIFT_SPECIFICATIONS.md)** - Technical economics specs
 3. **[COMMUNITY_FAQ.md](COMMUNITY_FAQ.md)** - Economics FAQ section
 4. **[LAUNCH_ANNOUNCEMENT_PACKAGE.md](LAUNCH_ANNOUNCEMENT_PACKAGE.md)** - Economics for community
+5. **[EMISSION_SCHEDULE.md](EMISSION_SCHEDULE.md)** - Detailed 8-year base supply + tail emission breakdown
 
 **Key Info:**
-- Pre-tail supply: 108,800,000 XFT
-- Tail emission: 9 XFT per block (unlimited)
-- Block time: 30 seconds
-- Long-term inflation: 0.87%/year
+- Base supply: 72,500,000 XWIFT over ~8 years (8,409,600 blocks)
+- Tail emission: 1.2 XWIFT per block forever (3,456/day)
+- Block time: 30 seconds (2,880 blocks/day)
+- Long-term inflation: ~1.7% at tail start, trending toward <1%
 
 ---
 
@@ -159,12 +190,14 @@ Last Updated: 2025-01-03
 2. **[XWIFT_SPECIFICATIONS.md](XWIFT_SPECIFICATIONS.md)** - Privacy features specs
 3. **[COMMUNITY_FAQ.md](COMMUNITY_FAQ.md)** - Privacy FAQ section
 4. **[LAUNCH_ANNOUNCEMENT_PACKAGE.md](LAUNCH_ANNOUNCEMENT_PACKAGE.md)** - Privacy for community
+5. **[EMERGENCY_FORK_GUIDE.md](EMERGENCY_FORK_GUIDE.md)** - Rapid-response procedures for critical vulnerabilities
 
 **Key Info:**
 - Monero-level privacy (ring signatures, stealth addresses, RingCT)
 - CLSAG signatures, Bulletproof+ range proofs
 - Dandelion++ network privacy
 - Mandatory privacy (no transparent transactions)
+- Documented emergency fork + incident response plan
 
 ---
 
@@ -189,12 +222,15 @@ Last Updated: 2025-01-03
 1. **[UBUNTU_DEPLOYMENT_STEPS.md](UBUNTU_DEPLOYMENT_STEPS.md)** - Step-by-step deployment
 2. **[DEPLOYMENT_READINESS.md](DEPLOYMENT_READINESS.md)** - Deployment status & quick start
 3. **[QUICK_START_GUIDE.md](QUICK_START_GUIDE.md)** - Quick deployment for users
+4. **[TESTNET_VALIDATION_GUIDE.md](TESTNET_VALIDATION_GUIDE.md)** - 30-day validator plan, stress tests, go/no-go metrics
+5. **[DEPLOYMENT_CHECKLIST.md](DEPLOYMENT_CHECKLIST.md)** - Pre-testnet, pre-mainnet, launch day task lists
 
 **Key Info:**
 - Ubuntu 20.04+ recommended
 - Build time: 20-60 minutes
 - Automated deployment script available
 - Systemd services included
+- Full validation + deployment checklists ready for launch
 
 ---
 
@@ -260,8 +296,8 @@ Last Updated: 2025-01-03
 ## 📊 Documentation Statistics
 
 **Total Documentation:**
-- 17 major documentation files
-- ~200 KB of comprehensive documentation
+- 21 major documentation files
+- ~290 KB of comprehensive documentation
 - 50+ FAQ questions answered
 - 100+ ready-to-post social media templates
 
@@ -269,6 +305,10 @@ Last Updated: 2025-01-03
 - ✅ Technical specifications (complete)
 - ✅ User guides (complete)
 - ✅ Deployment procedures (complete)
+- ✅ Testnet validation procedures (comprehensive)
+- ✅ Consensus changes (documented)
+- ✅ Emission schedule (detailed)
+- ✅ Emergency procedures (ready)
 - ✅ Community FAQ (comprehensive)
 - ✅ Marketing materials (extensive)
 - ✅ Transparency framework (detailed)
