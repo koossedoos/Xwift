@@ -301,11 +301,32 @@ namespace nodetool
     virtual void clear_used_stripe_peers();
 
   private:
+    // XWIFT SEED NODES - TESTNET PLACEHOLDERS
+    // ========================================
+    // WARNING: These are placeholder seed nodes for initial testnet deployment.
+    // They are NOT live yet and must be deployed before network launch.
+    //
+    // These seed nodes enable peer discovery during initial bootstrap when a node
+    // has no peer list. Without functioning seed nodes, new nodes cannot join the network.
+    //
+    // DEPLOYMENT REQUIRED:
+    // See NETWORK_SETUP.md for detailed instructions on:
+    //   - VPS provisioning and configuration
+    //   - Seed node installation and setup
+    //   - DNS configuration (or use IP:port format)
+    //   - Testing and verification
+    //
+    // TODO before mainnet launch:
+    //   1. Deploy at least 3-5 geographically distributed seed nodes
+    //   2. Update these addresses with live DNS hostnames or IP:port combinations
+    //   3. Test bootstrap from clean state
+    //   4. Consider adding --add-priority-node CLI override for testing
+    //
+    // Port 19080 is the default P2P port (configurable via --p2p-bind-port)
     const std::vector<std::string> m_seed_nodes_list =
-    { "seeds.moneroseeds.se"
-    , "seeds.moneroseeds.ae.org"
-    , "seeds.moneroseeds.ch"
-    , "seeds.moneroseeds.li"
+    { "seed1.xwift.testnet:19080"  // Placeholder - deploy in US/East
+    , "seed2.xwift.testnet:19080"  // Placeholder - deploy in EU/West
+    , "seed3.xwift.testnet:19080"  // Placeholder - deploy in Asia/Pacific
     };
 
     bool islimitup=false;
