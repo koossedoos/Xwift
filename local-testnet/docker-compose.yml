@@ -1,0 +1,169 @@
+version: "3.8"
+
+# Xwift Local Testnet - 4 Node Docker Topology
+# Hardware baseline: AMD Ryzen 5 7600 (12 threads), 30GB RAM, 551GB free storage
+# Objective: Zero-cost validation with 4 local nodes (3 seeds + 1 mining node)
+
+services:
+  seed-node-1:
+    build:
+      context: ..
+      dockerfile: Dockerfile.testnet
+      args:
+        NPROC: 4
+    image: local-xwift:testnet
+    container_name: xwift-seed-1
+    hostname: seed-node-1
+    restart: unless-stopped
+    environment:
+      XWIFT_NETWORK: testnet
+      NODE_ROLE: seed
+    command: ["--config-file", "/config/seed1-testnet.conf"]
+    volumes:
+      - ./configs/seed1-testnet.conf:/config/seed1-testnet.conf:ro
+      - ./data/seed1:/home/xwift/.xwift
+    ports:
+      - "29080:29080"   # P2P
+      - "29081:29081"   # RPC
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://localhost:29081/get_info"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    mem_limit: 3g
+    mem_reservation: 2g
+    cpus: "3.0"
+    networks:
+      xwift-testnet:
+        ipv4_address: 172.25.0.10
+
+  seed-node-2:
+    build:
+      context: ..
+      dockerfile: Dockerfile.testnet
+      args:
+        NPROC: 4
+    image: local-xwift:testnet
+    container_name: xwift-seed-2
+    hostname: seed-node-2
+    restart: unless-stopped
+    environment:
+      XWIFT_NETWORK: testnet
+      NODE_ROLE: seed
+    command: ["--config-file", "/config/seed2-testnet.conf"]
+    volumes:
+      - ./configs/seed2-testnet.conf:/config/seed2-testnet.conf:ro
+      - ./data/seed2:/home/xwift/.xwift
+    ports:
+      - "29082:29082"   # P2P
+      - "29083:29083"   # RPC
+    depends_on:
+      - seed-node-1
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://localhost:29083/get_info"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    mem_limit: 3g
+    mem_reservation: 2g
+    cpus: "3.0"
+    networks:
+      xwift-testnet:
+        ipv4_address: 172.25.0.11
+
+  seed-node-3:
+    build:
+      context: ..
+      dockerfile: Dockerfile.testnet
+      args:
+        NPROC: 4
+    image: local-xwift:testnet
+    container_name: xwift-seed-3
+    hostname: seed-node-3
+    restart: unless-stopped
+    environment:
+      XWIFT_NETWORK: testnet
+      NODE_ROLE: seed
+    command: ["--config-file", "/config/seed3-testnet.conf"]
+    volumes:
+      - ./configs/seed3-testnet.conf:/config/seed3-testnet.conf:ro
+      - ./data/seed3:/home/xwift/.xwift
+    ports:
+      - "29084:29084"   # P2P
+      - "29085:29085"   # RPC
+    depends_on:
+      - seed-node-1
+      - seed-node-2
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://localhost:29085/get_info"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    mem_limit: 3g
+    mem_reservation: 2g
+    cpus: "3.0"
+    networks:
+      xwift-testnet:
+        ipv4_address: 172.25.0.12
+
+  mining-node:
+    build:
+      context: ..
+      dockerfile: Dockerfile.testnet
+      args:
+        NPROC: 4
+    image: local-xwift:testnet
+    container_name: xwift-mining
+    hostname: mining-node
+    restart: unless-stopped
+    environment:
+      XWIFT_NETWORK: testnet
+      NODE_ROLE: miner
+      MINER_ADDRESS: ${MINER_ADDRESS:-}
+      MINING_THREADS: ${MINING_THREADS:-4}
+    command:
+      - /bin/bash
+      - -c
+      - |
+        if [ -z "$MINER_ADDRESS" ]; then
+          echo "[xwift-mining] MINER_ADDRESS is not set. Update local-testnet/.env before starting." >&2
+          exit 1
+        fi
+        exec xwiftd \
+          --config-file /config/mining-testnet.conf \
+          --start-mining "$MINER_ADDRESS" \
+          --mining-threads "${MINING_THREADS}" \
+          --bg-mining-enable
+    volumes:
+      - ./configs/mining-testnet.conf:/config/mining-testnet.conf:ro
+      - ./data/mining:/home/xwift/.xwift
+    ports:
+      - "29086:29086"   # P2P
+      - "29087:29087"   # RPC
+    depends_on:
+      - seed-node-1
+      - seed-node-2
+      - seed-node-3
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://localhost:29087/get_info"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    mem_limit: 3g
+    mem_reservation: 2g
+    cpus: "3.0"
+    networks:
+      xwift-testnet:
+        ipv4_address: 172.25.0.13
+
+networks:
+  xwift-testnet:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.25.0.0/24
