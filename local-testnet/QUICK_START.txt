@@ -1,0 +1,124 @@
+═══════════════════════════════════════════════════════════════════
+  XWIFT LOCAL TESTNET - QUICK START
+═══════════════════════════════════════════════════════════════════
+
+Prerequisites:
+✓ Ubuntu 20.04+ or compatible Linux
+✓ Docker & Docker Compose installed
+✓ 16GB+ RAM, 400GB+ storage, 6+ CPU cores
+
+═══════════════════════════════════════════════════════════════════
+STEP 1: Install Docker (if not already installed)
+═══════════════════════════════════════════════════════════════════
+
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+sudo usermod -aG docker $USER
+# Log out and back in
+
+═══════════════════════════════════════════════════════════════════
+STEP 2: Navigate to testnet directory
+═══════════════════════════════════════════════════════════════════
+
+cd local-testnet
+
+═══════════════════════════════════════════════════════════════════
+STEP 3: Create wallet
+═══════════════════════════════════════════════════════════════════
+
+# Build Docker image first
+docker build -f ../Dockerfile.testnet -t local-xwift:testnet ..
+
+# Create wallet
+mkdir -p wallet
+docker run --rm -it -v $(pwd)/wallet:/wallet local-xwift:testnet \
+  xwift-wallet-cli --testnet --generate-new-wallet /wallet/miner-wallet
+
+# SAVE YOUR 25-WORD SEED PHRASE!
+# Copy your wallet address (starts with "X...")
+
+═══════════════════════════════════════════════════════════════════
+STEP 4: Configure environment
+═══════════════════════════════════════════════════════════════════
+
+cp .env.example .env
+nano .env
+# Set: MINER_ADDRESS=<your_wallet_address_from_step_3>
+
+═══════════════════════════════════════════════════════════════════
+STEP 5: Start testnet
+═══════════════════════════════════════════════════════════════════
+
+./start-testnet.sh
+
+# Wait 60 seconds for initialization
+
+═══════════════════════════════════════════════════════════════════
+STEP 6: Monitor
+═══════════════════════════════════════════════════════════════════
+
+# Real-time dashboard
+./monitoring/monitor-nodes.sh
+
+# Quick status
+./status-testnet.sh
+
+# View logs
+./logs-testnet.sh mining --follow
+
+═══════════════════════════════════════════════════════════════════
+USEFUL COMMANDS
+═══════════════════════════════════════════════════════════════════
+
+Stop:                ./stop-testnet.sh
+Reset:               ./reset-testnet.sh
+Status:              ./status-testnet.sh
+Logs:                ./logs-testnet.sh [seed1|seed2|seed3|mining|all]
+Monitor:             ./monitoring/monitor-nodes.sh
+Orphan rate:         ./monitoring/orphan-rate-tracker-local.sh 60
+Difficulty:          ./monitoring/difficulty-monitor-local.sh 120
+Block propagation:   ./monitoring/block-propagation-test.sh 10
+Emission:            ./emission-validator-local.py --window 1000
+Dev fund:            ./monitoring/dev-fund-checker-local.sh
+Full test suite:     ./test-harness.sh
+Dashboard:           ./dashboard/generate-local-dashboard.sh
+
+═══════════════════════════════════════════════════════════════════
+PORTS
+═══════════════════════════════════════════════════════════════════
+
+Seed Node 1:   P2P 29080, RPC 29081
+Seed Node 2:   P2P 29082, RPC 29083
+Seed Node 3:   P2P 29084, RPC 29085
+Mining Node:   P2P 29086, RPC 29087
+
+RPC Example:
+curl http://127.0.0.1:29081/get_info | jq
+
+═══════════════════════════════════════════════════════════════════
+DOCUMENTATION
+═══════════════════════════════════════════════════════════════════
+
+Main guide:       ../LOCAL_TESTNET_README.md
+Docker setup:     ../DOCKER_SETUP_GUIDE.md
+Troubleshooting:  ../TROUBLESHOOTING_LOCAL.md
+VPS migration:    ../UPGRADE_TO_VPS.md
+Validation tests: ../validation-tests.md
+Daily checklist:  ../daily-checklist-local.md
+
+═══════════════════════════════════════════════════════════════════
+ZERO COST OPERATION
+═══════════════════════════════════════════════════════════════════
+
+✓ Solar powered ($0/month)
+✓ Free WiFi ($0/month)
+✓ No VPS fees
+✓ No cloud storage
+
+═══════════════════════════════════════════════════════════════════
+NEED HELP?
+═══════════════════════════════════════════════════════════════════
+
+See ../TROUBLESHOOTING_LOCAL.md for common issues and solutions.
+
+═══════════════════════════════════════════════════════════════════

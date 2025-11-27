@@ -30,6 +30,14 @@ ClangBuildAnalyzerSession.txt
 
 # Created by https://www.gitignore.io
 
+# Local testnet artifacts
+/local-testnet/data/
+/local-testnet/wallet/
+/local-testnet/.env
+/local-testnet/dashboard/reports/
+/local-testnet/dashboard/index.html
+/local-testnet/dashboard/*.html
+
 ### C++ ###
 # Compiled Object files
 *.slo
