@@ -1,0 +1,69 @@
+version: '3.8'
+
+services:
+  xwift-testnet:
+    build:
+      context: .
+      dockerfile: Dockerfile.testnet
+      args:
+        NPROC: 4
+    container_name: xwift-testnet
+    ports:
+      - "29080:29080"  # P2P
+      - "29081:29081"  # RPC
+    volumes:
+      - xwift-testnet-data:/home/xwift/.xwift
+      - xwift-testnet-wallet:/wallet
+    restart: unless-stopped
+    environment:
+      - XWIFT_NETWORK=testnet
+    networks:
+      - xwift-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:29081/get_info"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  xwift-mainnet:
+    build:
+      context: .
+      dockerfile: Dockerfile.mainnet
+      args:
+        NPROC: 4
+    container_name: xwift-mainnet
+    ports:
+      - "19080:19080"  # P2P
+      - "19081:19081"  # RPC
+    volumes:
+      - xwift-mainnet-data:/home/xwift/.xwift
+      - xwift-mainnet-wallet:/wallet
+    restart: unless-stopped
+    environment:
+      - XWIFT_NETWORK=mainnet
+    networks:
+      - xwift-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:19081/get_info"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+volumes:
+  xwift-testnet-data:
+    driver: local
+  xwift-testnet-wallet:
+    driver: local
+  xwift-mainnet-data:
+    driver: local
+  xwift-mainnet-wallet:
+    driver: local
+
+networks:
+  xwift-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

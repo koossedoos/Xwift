@@ -578,44 +578,44 @@ bool t_command_parser_executor::set_limit_down(const std::vector<std::string>& a
 
 bool t_command_parser_executor::out_peers(const std::vector<std::string>& args)
 {
-	bool set = false;
-	uint32_t limit = 0;
-	try {
-		if (!args.empty())
-		{
-			limit = std::stoi(args[0]);
-			set = true;
-		}
-	}
+    bool set = false;
+    uint32_t limit = 0;
+    try {
+        if (!args.empty())
+        {
+            limit = std::stoi(args[0]);
+            set = true;
+        }
+    }
 
-	catch(const std::exception& ex) {
-		_erro("stoi exception");
-		std::cout << "Invalid syntax: Failed to parse number. For more details, use the help command." << std::endl;
-		return true;
-	}
+    catch(const std::exception& ex) {
+        _erro("stoi exception");
+        std::cout << "Invalid syntax: Failed to parse number. For more details, use the help command." << std::endl;
+        return true;
+    }
 
-	return m_executor.out_peers(set, limit);
+    return m_executor.out_peers(set, limit);
 }
 
 bool t_command_parser_executor::in_peers(const std::vector<std::string>& args)
 {
-	bool set = false;
-	uint32_t limit = 0;
-	try {
-		if (!args.empty())
-		{
-			limit = std::stoi(args[0]);
-			set = true;
-		}
-	}
+    bool set = false;
+    uint32_t limit = 0;
+    try {
+        if (!args.empty())
+        {
+            limit = std::stoi(args[0]);
+            set = true;
+        }
+    }
 
-	catch(const std::exception& ex) {
-		_erro("stoi exception");
-		std::cout << "Invalid syntax: Failed to parse number." << std::endl;
-		return true;
-	}
+    catch(const std::exception& ex) {
+        _erro("stoi exception");
+        std::cout << "Invalid syntax: Failed to parse number." << std::endl;
+        return true;
+    }
 
-	return m_executor.in_peers(set, limit);
+    return m_executor.in_peers(set, limit);
 }
 
 bool t_command_parser_executor::hard_fork_info(const std::vector<std::string>& args)
@@ -979,10 +979,10 @@ bool t_command_parser_executor::prune_blockchain(const std::vector<std::string>&
 
   if (args.empty() || args[0] != "confirm")
   {
-    std::cout << "Warning: pruning from within monerod will not shrink the database file size." << std::endl;
+    std::cout << "Warning: pruning from within xwiftd will not shrink the database file size." << std::endl;
     std::cout << "Instead, parts of the file will be marked as free, so the file will not grow" << std::endl;
     std::cout << "until that newly free space is used up. If you want a smaller file size now," << std::endl;
-    std::cout << "exit monerod and run monero-blockchain-prune (you will temporarily need more" << std::endl;
+    std::cout << "exit xwiftd and run monero-blockchain-prune (you will temporarily need more" << std::endl;
     std::cout << "disk space for the database conversion though). If you are OK with the database" << std::endl;
     std::cout << "file keeping the same size, re-run this command with the \"confirm\" parameter." << std::endl;
     return true;

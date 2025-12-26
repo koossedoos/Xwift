@@ -1,0 +1,17 @@
+[Unit]
+Description=Xwift Testnet Full Node
+After=network-online.target
+
+[Service]
+User=xwift
+Group=xwift
+WorkingDirectory=~
+Type=simple
+ExecStart=/usr/local/bin/xwiftd --testnet --data-dir=/var/lib/xwift-testnet --log-file=/var/log/xwift-testnet/xwift.log --p2p-bind-ip=0.0.0.0 --p2p-bind-port=29080 --rpc-bind-ip=0.0.0.0 --rpc-bind-port=29081 --non-interactive --confirm-external-bind
+StandardOutput=null
+StandardError=null
+Restart=always
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target

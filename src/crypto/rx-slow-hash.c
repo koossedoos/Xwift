@@ -41,7 +41,7 @@
 #include "hash-ops.h"
 #include "misc_log_ex.h"
 
-#define RX_LOGCAT	"randomx"
+#define RX_LOGCAT    "randomx"
 
 // Report large page allocation failures as debug messages
 #define alloc_err_msg(x) mdebug(RX_LOGCAT, x);
@@ -103,7 +103,7 @@ static inline int disabled_flags(void) {
     return flags;
   }
 
-  const char *env = getenv("MONERO_RANDOMX_UMASK");
+  const char *env = getenv("XWIFT_RANDOMX_UMASK");
   if (!env) {
     flags = 0;
   }
@@ -133,8 +133,8 @@ static inline int enabled_flags(void) {
   return flags;
 }
 
-#define SEEDHASH_EPOCH_BLOCKS	2048	/* Must be same as BLOCKS_SYNCHRONIZING_MAX_COUNT in cryptonote_config.h */
-#define SEEDHASH_EPOCH_LAG		64
+#define SEEDHASH_EPOCH_BLOCKS    2048    /* Must be same as BLOCKS_SYNCHRONIZING_MAX_COUNT in cryptonote_config.h */
+#define SEEDHASH_EPOCH_LAG        64
 
 static inline int is_power_of_2(uint64_t n) { return n && (n & (n-1)) == 0; }
 
@@ -199,7 +199,7 @@ static void rx_alloc_dataset(randomx_flags flags, randomx_dataset** dataset, int
     static int shown = 0;
     if (!shown) {
       shown = 1;
-      minfo(RX_LOGCAT, "RandomX dataset is disabled by MONERO_RANDOMX_UMASK environment variable.");
+      minfo(RX_LOGCAT, "RandomX dataset is disabled by XWIFT_RANDOMX_UMASK environment variable.");
     }
     return;
   }

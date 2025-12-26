@@ -36,14 +36,9 @@ set(MONERO_WALLET_CRYPTO_LIBRARY "auto" CACHE STRING "Select a wallet crypto lib
 # If the user specified "auto", detect best library defaulting to internal.
 #
 if (${MONERO_WALLET_CRYPTO_LIBRARY} STREQUAL "auto")
-   monero_crypto_autodetect(AVAILABLE BEST)
-  if (DEFINED BEST)
-    message("Wallet crypto is using ${BEST} backend")
-    set(MONERO_WALLET_CRYPTO_LIBRARY ${BEST})
-  else ()
-    message("Defaulting to internal crypto library for wallet")
-    set(MONERO_WALLET_CRYPTO_LIBRARY "cn")
-  endif ()
+  # Autodetect function not available - using internal crypto library
+  message("Wallet crypto is using cn (internal) backend")
+  set(MONERO_WALLET_CRYPTO_LIBRARY "cn")
 endif ()
 
 #

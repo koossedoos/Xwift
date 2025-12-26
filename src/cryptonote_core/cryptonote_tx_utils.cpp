@@ -30,6 +30,7 @@
 
 #include <unordered_set>
 #include <random>
+#include <iomanip>
 #include "include_base_utils.h"
 #include "string_tools.h"
 using namespace epee;
@@ -102,6 +103,12 @@ namespace cryptonote
     LOG_PRINT_L1("Creating block template: reward " << block_reward <<
       ", fee " << fee);
 #endif
+    
+    LOG_PRINT_L1("Network Health: Block creation - height=" << height 
+                 << ", reward=" << cryptonote::print_money(block_reward) 
+                 << " XWIFT, fee=" << cryptonote::print_money(fee) 
+                 << " XWIFT, total=" << cryptonote::print_money(block_reward + fee) << " XWIFT");
+    
     block_reward += fee;
 
     // from hard fork 2, we cut out the low significant digits. This makes the tx smaller, and
@@ -707,7 +714,7 @@ namespace cryptonote
   bool get_block_longhash(const Blockchain *pbc, const block& b, crypto::hash& res, const uint64_t height, const crypto::hash *seed_hash, const int miners)
   {
     blobdata bd = get_block_hashing_blob(b);
-	return get_block_longhash(pbc, bd, res, height, b.major_version, seed_hash, miners);
+    return get_block_longhash(pbc, bd, res, height, b.major_version, seed_hash, miners);
   }
 
   crypto::hash get_block_longhash(const Blockchain *pbc, const block& b, const uint64_t height, const crypto::hash *seed_hash, const int miners)

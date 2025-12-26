@@ -1,0 +1,17 @@
+[Unit]
+Description=Xwift Mainnet Full Node
+After=network-online.target
+
+[Service]
+User=xwift
+Group=xwift
+WorkingDirectory=~
+Type=simple
+ExecStart=/usr/local/bin/xwiftd --data-dir=/var/lib/xwift-mainnet --log-file=/var/log/xwift-mainnet/xwift.log --p2p-bind-ip=0.0.0.0 --p2p-bind-port=19080 --rpc-bind-ip=0.0.0.0 --rpc-bind-port=19081 --non-interactive --confirm-external-bind
+StandardOutput=null
+StandardError=null
+Restart=always
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target

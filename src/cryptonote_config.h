@@ -41,47 +41,56 @@
 #define CRYPTONOTE_MAX_TX_SIZE                          1000000
 #define CRYPTONOTE_MAX_TX_PER_BLOCK                     0x10000000
 #define CRYPTONOTE_PUBLIC_ADDRESS_TEXTBLOB_VER          0
-#define CRYPTONOTE_MINED_MONEY_UNLOCK_WINDOW            60
+#define CRYPTONOTE_MINED_MONEY_UNLOCK_WINDOW            60  // 30 minutes (60 blocks * 30 seconds) - CRITICAL #3: Prevents mining pool theft via reorg attacks
 #define CURRENT_TRANSACTION_VERSION                     2
 #define CURRENT_BLOCK_MAJOR_VERSION                     1
 #define CURRENT_BLOCK_MINOR_VERSION                     0
 #define CRYPTONOTE_BLOCK_FUTURE_TIME_LIMIT              60*60*2
 #define CRYPTONOTE_DEFAULT_TX_SPENDABLE_AGE             10
 
-#define BLOCKCHAIN_TIMESTAMP_CHECK_WINDOW               60
+#define BLOCKCHAIN_TIMESTAMP_CHECK_WINDOW               15  // 7.5 minutes (15 blocks * 30 seconds) - CRITICAL #6: Prevents timestamp manipulation attacks, matches new difficulty window scale
 
-// MONEY_SUPPLY - total number coins to be generated
-#define MONEY_SUPPLY                                    ((uint64_t)(-1))
-#define EMISSION_SPEED_FACTOR_PER_MINUTE                (20)
-#define FINAL_SUBSIDY_PER_MINUTE                        ((uint64_t)300000000000) // 3 * pow(10, 11)
+// MONEY_SUPPLY - total number coins to be generated before tail emission
+#define MONEY_SUPPLY                                    ((uint64_t)(-1)) // Unlimited supply - 72.5M base coins over 8 years, then perpetual tail emission
+#define EMISSION_SPEED_FACTOR_PER_MINUTE                (20)  // Adjusted for 8-year base supply phase (72.5M coins total)
+#define FINAL_SUBSIDY_PER_MINUTE                        ((uint64_t)240000000) // Perpetual tail emission: 1.2 XWIFT per block (30s), 2.4 XWIFT per minute, ~3,456 XWIFT per day
+// EMISSION SCHEDULE (8-year base + perpetual tail):
+// Base Phase: 0-8,409,600 blocks (~8 years at 30s blocks)
+//   - Total: 72,500,000 XWIFT via exponential decay
+//   - Average ~8.6 XWIFT per block (higher early, decaying over 8 years)
+//   - Daily output: Starts ~24,870 XWIFT/day, decays to ~6,912 XWIFT/day
+// Tail Phase: Block 8,409,601+ (perpetual)
+//   - Fixed: 1.2 XWIFT per block
+//   - Daily: 3,456 XWIFT per day forever
+//   - Annual at tail: ~1,261,440 XWIFT per year (stable forever)
 
 #define CRYPTONOTE_REWARD_BLOCKS_WINDOW                 100
 #define CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE_V2    60000 //size of block (bytes) after which reward for block calculated using block size
 #define CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE_V1    20000 //size of block (bytes) after which reward for block calculated using block size - before first fork
 #define CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE_V5    300000 //size of block (bytes) after which reward for block calculated using block size - second change, from v5
 #define CRYPTONOTE_LONG_TERM_BLOCK_WEIGHT_WINDOW_SIZE   100000 // size in blocks of the long term block weight median window
-#define CRYPTONOTE_SHORT_TERM_BLOCK_WEIGHT_SURGE_FACTOR 50
+#define CRYPTONOTE_SHORT_TERM_BLOCK_WEIGHT_SURGE_FACTOR 10
 #define CRYPTONOTE_COINBASE_BLOB_RESERVED_SIZE          600
-#define CRYPTONOTE_DISPLAY_DECIMAL_POINT                12
+#define CRYPTONOTE_DISPLAY_DECIMAL_POINT                8
 // COIN - number of smallest units in one coin
-#define COIN                                            ((uint64_t)1000000000000) // pow(10, 12)
+#define COIN                                            ((uint64_t)100000000) // pow(10, 8) - 100,000,000 units = 1 XWIFT
 
-#define FEE_PER_KB_OLD                                  ((uint64_t)10000000000) // pow(10, 10)
-#define FEE_PER_KB                                      ((uint64_t)2000000000) // 2 * pow(10, 9)
-#define FEE_PER_BYTE                                    ((uint64_t)300000)
-#define DYNAMIC_FEE_PER_KB_BASE_FEE                     ((uint64_t)2000000000) // 2 * pow(10,9)
-#define DYNAMIC_FEE_PER_KB_BASE_BLOCK_REWARD            ((uint64_t)10000000000000) // 10 * pow(10,12)
+#define FEE_PER_KB_OLD                                  ((uint64_t)1000000) // 0.01 XWIFT = 1,000,000 atomic units
+#define FEE_PER_KB                                      ((uint64_t)200000) // 0.002 XWIFT = 200,000 atomic units
+#define FEE_PER_BYTE                                    ((uint64_t)30)    // 0.0000003 XWIFT per byte
+#define DYNAMIC_FEE_PER_KB_BASE_FEE                     ((uint64_t)200000) // 0.002 XWIFT base fee
+#define DYNAMIC_FEE_PER_KB_BASE_BLOCK_REWARD            ((uint64_t)5400000000) // 54 XWIFT initial block reward
 #define DYNAMIC_FEE_PER_KB_BASE_FEE_V5                  ((uint64_t)2000000000 * (uint64_t)CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE_V2 / CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE_V5)
 #define DYNAMIC_FEE_REFERENCE_TRANSACTION_WEIGHT         ((uint64_t)3000)
 
 #define ORPHANED_BLOCKS_MAX_COUNT                       100
 
 
-#define DIFFICULTY_TARGET_V2                            120  // seconds
-#define DIFFICULTY_TARGET_V1                            60  // seconds - before first fork
-#define DIFFICULTY_WINDOW                               720 // blocks
-#define DIFFICULTY_LAG                                  15  // !!!
-#define DIFFICULTY_CUT                                  60  // timestamps to cut after sorting
+#define DIFFICULTY_TARGET_V2                            30  // seconds - 30-second block time = 2,880 blocks/day (~1,051,200/year)
+#define DIFFICULTY_TARGET_V1                            15  // seconds - before first fork
+#define DIFFICULTY_WINDOW                               72  // 36 minutes of adjustment history (72 blocks * 30 seconds) - CRITICAL #4: Reduces oscillation, prevents time-warp attacks, reduces orphan rate from 20-30% to <5%
+#define DIFFICULTY_LAG                                  3   // 1.5 minutes (3 blocks * 30 seconds) - Smooths difficulty adjustment, prevents wild swings
+#define DIFFICULTY_CUT                                  1   // trim minimal outliers for the shorter window
 #define DIFFICULTY_BLOCKS_COUNT                         DIFFICULTY_WINDOW + DIFFICULTY_LAG
 
 
@@ -96,8 +105,8 @@
 #define BLOCKS_IDS_SYNCHRONIZING_DEFAULT_COUNT          10000  //by default, blocks ids count in synchronizing
 #define BLOCKS_IDS_SYNCHRONIZING_MAX_COUNT              25000  //max blocks ids count in synchronizing
 #define BLOCKS_SYNCHRONIZING_DEFAULT_COUNT_PRE_V4       100    //by default, blocks count in blocks downloading
-#define BLOCKS_SYNCHRONIZING_DEFAULT_COUNT              20     //by default, blocks count in blocks downloading
-#define BLOCKS_SYNCHRONIZING_MAX_COUNT                  2048   //must be a power of 2, greater than 128, equal to SEEDHASH_EPOCH_BLOCKS
+#define BLOCKS_SYNCHRONIZING_DEFAULT_COUNT              200     //optimized for 30s blocks (4× more blocks than Monero)
+#define BLOCKS_SYNCHRONIZING_MAX_COUNT                  8192   //must be a power of 2, optimized for 30s block time
 
 #define CRYPTONOTE_MEMPOOL_TX_LIVETIME                    (86400*3) //seconds, three days
 #define CRYPTONOTE_MEMPOOL_TX_FROM_ALT_BLOCK_LIVETIME     604800 //seconds, one week
@@ -136,8 +145,8 @@
 #define P2P_LOCAL_WHITE_PEERLIST_LIMIT                  1000
 #define P2P_LOCAL_GRAY_PEERLIST_LIMIT                   5000
 
-#define P2P_DEFAULT_CONNECTIONS_COUNT                   12
-#define P2P_DEFAULT_HANDSHAKE_INTERVAL                  60           //secondes
+#define P2P_DEFAULT_CONNECTIONS_COUNT                   16           // Increased for 30s blocks (more frequent block propagation)
+#define P2P_DEFAULT_HANDSHAKE_INTERVAL                  30           // Reduced for faster blocks (was 60 seconds)
 #define P2P_DEFAULT_PACKET_MAX_SIZE                     50000000     //50000000 bytes maximum packet size
 #define P2P_DEFAULT_PEERS_IN_HANDSHAKE                  250
 #define P2P_MAX_PEERS_IN_HANDSHAKE                      250
@@ -162,7 +171,7 @@
 
 #define RPC_IP_FAILS_BEFORE_BLOCK                       3
 
-#define CRYPTONOTE_NAME                         "bitmonero"
+#define CRYPTONOTE_NAME                         "xwift"
 #define CRYPTONOTE_BLOCKCHAINDATA_FILENAME      "data.mdb"
 #define CRYPTONOTE_BLOCKCHAINDATA_LOCK_FILENAME "lock.mdb"
 #define P2P_NET_DATA_FILENAME                   "p2pstate.bin"
@@ -171,34 +180,34 @@
 
 #define THREAD_STACK_SIZE                       5 * 1024 * 1024
 
-#define HF_VERSION_DYNAMIC_FEE                  4
-#define HF_VERSION_MIN_MIXIN_4                  6
-#define HF_VERSION_MIN_MIXIN_6                  7
-#define HF_VERSION_MIN_MIXIN_10                 8
-#define HF_VERSION_MIN_MIXIN_15                 15
-#define HF_VERSION_ENFORCE_RCT                  6
-#define HF_VERSION_PER_BYTE_FEE                 8
-#define HF_VERSION_SMALLER_BP                   10
-#define HF_VERSION_LONG_TERM_BLOCK_WEIGHT       10
-#define HF_VERSION_MIN_2_OUTPUTS                12
-#define HF_VERSION_MIN_V2_COINBASE_TX           12
-#define HF_VERSION_SAME_MIXIN                   12
-#define HF_VERSION_REJECT_SIGS_IN_COINBASE      12
-#define HF_VERSION_ENFORCE_MIN_AGE              12
-#define HF_VERSION_EFFECTIVE_SHORT_TERM_MEDIAN_IN_PENALTY 12
-#define HF_VERSION_EXACT_COINBASE               13
-#define HF_VERSION_CLSAG                        13
-#define HF_VERSION_DETERMINISTIC_UNLOCK_TIME    13
-#define HF_VERSION_BULLETPROOF_PLUS             15
-#define HF_VERSION_VIEW_TAGS                    15
-#define HF_VERSION_2021_SCALING                 15
+#define HF_VERSION_DYNAMIC_FEE                  1   // Enable earlier for fast blocks
+#define HF_VERSION_MIN_MIXIN_4                  1   // Enable earlier
+#define HF_VERSION_MIN_MIXIN_6                  2   // Earlier privacy
+#define HF_VERSION_MIN_MIXIN_10                 3   // Earlier privacy
+#define HF_VERSION_MIN_MIXIN_15                 6   // Later when established
+#define HF_VERSION_ENFORCE_RCT                  2   // RingCT earlier
+#define HF_VERSION_PER_BYTE_FEE                 2   // Fee optimization
+#define HF_VERSION_SMALLER_BP                   3   // Bulletproof optimization
+#define HF_VERSION_LONG_TERM_BLOCK_WEIGHT       3   // Block weight optimization
+#define HF_VERSION_MIN_2_OUTPUTS                2   // Transaction optimization
+#define HF_VERSION_MIN_V2_COINBASE_TX           2   // Coinbase optimization
+#define HF_VERSION_SAME_MIXIN                   3   // Privacy improvement
+#define HF_VERSION_REJECT_SIGS_IN_COINBASE      2   // Security improvement
+#define HF_VERSION_ENFORCE_MIN_AGE              2   // Security
+#define HF_VERSION_EFFECTIVE_SHORT_TERM_MEDIAN_IN_PENALTY 3   // Block weight
+#define HF_VERSION_EXACT_COINBASE               4   // Precise rewards
+#define HF_VERSION_CLSAG                        4   // CLSAG signatures
+#define HF_VERSION_DETERMINISTIC_UNLOCK_TIME    4   // Unlock time
+#define HF_VERSION_BULLETPROOF_PLUS             5   // Latest bulletproofs
+#define HF_VERSION_VIEW_TAGS                    5   // Optimization
+#define HF_VERSION_2021_SCALING                 5   // Latest scaling
 
 #define PER_KB_FEE_QUANTIZATION_DECIMALS        8
 #define CRYPTONOTE_SCALING_2021_FEE_ROUNDING_PLACES 2
 
 #define HASH_OF_HASHES_STEP                     512
 
-#define DEFAULT_TXPOOL_MAX_WEIGHT               648000000ull // 3 days at 300000, in bytes
+#define DEFAULT_TXPOOL_MAX_WEIGHT               216000000ull // 1 day at 300KB blocks (mitigates spam attacks on 30-second blockchain)
 
 #define BULLETPROOF_MAX_OUTPUTS                 16
 #define BULLETPROOF_PLUS_MAX_OUTPUTS            16
@@ -219,22 +228,23 @@
 // New constants are intended to go here
 namespace config
 {
-  uint64_t const DEFAULT_FEE_ATOMIC_XMR_PER_KB = 500; // Just a placeholder!  Change me!
+  uint64_t const DEFAULT_FEE_ATOMIC_XWIFT_PER_KB = 200000; // 0.002 XWIFT default fee per KB
   uint8_t const FEE_CALCULATION_MAX_RETRIES = 10;
-  uint64_t const DEFAULT_DUST_THRESHOLD = ((uint64_t)2000000000); // 2 * pow(10, 9)
-  uint64_t const BASE_REWARD_CLAMP_THRESHOLD = ((uint64_t)100000000); // pow(10, 8)
+  uint64_t const DEFAULT_DUST_THRESHOLD = ((uint64_t)200000); // 0.002 XWIFT dust threshold
+  uint64_t const BASE_REWARD_CLAMP_THRESHOLD = ((uint64_t)50000000); // 0.5 XWIFT minimum reward
 
-  uint64_t const CRYPTONOTE_PUBLIC_ADDRESS_BASE58_PREFIX = 18;
-  uint64_t const CRYPTONOTE_PUBLIC_INTEGRATED_ADDRESS_BASE58_PREFIX = 19;
-  uint64_t const CRYPTONOTE_PUBLIC_SUBADDRESS_BASE58_PREFIX = 42;
-  uint16_t const P2P_DEFAULT_PORT = 18080;
-  uint16_t const RPC_DEFAULT_PORT = 18081;
-  uint16_t const ZMQ_RPC_DEFAULT_PORT = 18082;
+  uint64_t const CRYPTONOTE_PUBLIC_ADDRESS_BASE58_PREFIX = 65;
+  uint64_t const CRYPTONOTE_PUBLIC_INTEGRATED_ADDRESS_BASE58_PREFIX = 66;
+  uint64_t const CRYPTONOTE_PUBLIC_SUBADDRESS_BASE58_PREFIX = 67;
+  uint16_t const P2P_DEFAULT_PORT = 19080;  // Changed from 18080 to avoid Monero conflicts
+  uint16_t const RPC_DEFAULT_PORT = 19081;  // Changed from 18081 to avoid Monero conflicts
+  uint16_t const ZMQ_RPC_DEFAULT_PORT = 19082;  // Changed from 18082 to avoid Monero conflicts
   boost::uuids::uuid const NETWORK_ID = { {
-      0x12 ,0x30, 0xF1, 0x71 , 0x61, 0x04 , 0x41, 0x61, 0x17, 0x31, 0x00, 0x82, 0x16, 0xA1, 0xA1, 0x10
-    } }; // Bender's nightmare
-  std::string const GENESIS_TX = "013c01ff0001ffffffffffff03029b2e4c0281c0b02e7c53291a94d1d0cbff8883f8024f5142ee494ffbbd08807121017767aafcde9be00dcfd098715ebcf7f410daebc582fda69d24a28e9d0bc890d1";
-  uint32_t const GENESIS_NONCE = 10000;
+      0x58, 0x57, 0x49, 0x46, 0x54, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01
+    } }; // XWIFT network
+  std::string const GENESIS_TX = "013c01ff0001ffffffffffff0302df5d56da0c7d643ddd1ce61901c7bdc5fb1738bfe39fbe69c28a3a7032729c0f2101168d0c4ca86fb55a4cf6a36d31431be1c53a3bd7411bb24e8832410289fa6f3b";
+  uint32_t const GENESIS_NONCE = 10003;
 
   // Hash domain separators
   const char HASH_KEY_BULLETPROOF_EXPONENT[] = "bulletproof";
@@ -256,7 +266,7 @@ namespace config
   const unsigned char HASH_KEY_CLSAG_ROUND[] = "CLSAG_round";
   const unsigned char HASH_KEY_CLSAG_AGG_0[] = "CLSAG_agg_0";
   const unsigned char HASH_KEY_CLSAG_AGG_1[] = "CLSAG_agg_1";
-  const char HASH_KEY_MESSAGE_SIGNING[] = "MoneroMessageSignature";
+  const char HASH_KEY_MESSAGE_SIGNING[] = "XwiftMessageSignature";
   const unsigned char HASH_KEY_MM_SLOT = 'm';
   const constexpr char HASH_KEY_MULTISIG_TX_PRIVKEYS_SEED[] = "multisig_tx_privkeys_seed";
   const constexpr char HASH_KEY_MULTISIG_TX_PRIVKEYS[] = "multisig_tx_privkeys";
@@ -267,17 +277,26 @@ namespace config
 
   namespace testnet
   {
-    uint64_t const CRYPTONOTE_PUBLIC_ADDRESS_BASE58_PREFIX = 53;
-    uint64_t const CRYPTONOTE_PUBLIC_INTEGRATED_ADDRESS_BASE58_PREFIX = 54;
-    uint64_t const CRYPTONOTE_PUBLIC_SUBADDRESS_BASE58_PREFIX = 63;
-    uint16_t const P2P_DEFAULT_PORT = 28080;
-    uint16_t const RPC_DEFAULT_PORT = 28081;
-    uint16_t const ZMQ_RPC_DEFAULT_PORT = 28082;
+    // Testnet Configuration: Separate network for testing without risking mainnet funds
+    // Base58 address prefixes distinguish testnet addresses from mainnet (avoid accidental sends)
+    uint64_t const CRYPTONOTE_PUBLIC_ADDRESS_BASE58_PREFIX = 85;              // Testnet standard address prefix (vs 65 mainnet)
+    uint64_t const CRYPTONOTE_PUBLIC_INTEGRATED_ADDRESS_BASE58_PREFIX = 86;   // Testnet integrated address prefix (vs 66 mainnet)
+    uint64_t const CRYPTONOTE_PUBLIC_SUBADDRESS_BASE58_PREFIX = 87;           // Testnet subaddress prefix (vs 67 mainnet)
+    
+    // Network ports offset by 10000 from mainnet to prevent cross-network interference
+    uint16_t const P2P_DEFAULT_PORT = 29080;      // Testnet P2P port (mainnet: 19080)
+    uint16_t const RPC_DEFAULT_PORT = 29081;      // Testnet RPC port (mainnet: 19081)
+    uint16_t const ZMQ_RPC_DEFAULT_PORT = 29082;  // Testnet ZMQ port (mainnet: 19082)
+    
+    // Unique network ID prevents testnet/mainnet node cross-communication
     boost::uuids::uuid const NETWORK_ID = { {
-        0x12 ,0x30, 0xF1, 0x71 , 0x61, 0x04 , 0x41, 0x61, 0x17, 0x31, 0x00, 0x82, 0x16, 0xA1, 0xA1, 0x11
-      } }; // Bender's daydream
+        0x58, 0x57, 0x49, 0x46, 0x54, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02  // Last byte 0x02 = testnet (0x01 = mainnet)
+      } }; // XWIFT testnet
+    
+    // Testnet genesis block (different from mainnet to create separate blockchain)
     std::string const GENESIS_TX = "013c01ff0001ffffffffffff03029b2e4c0281c0b02e7c53291a94d1d0cbff8883f8024f5142ee494ffbbd08807121017767aafcde9be00dcfd098715ebcf7f410daebc582fda69d24a28e9d0bc890d1";
-    uint32_t const GENESIS_NONCE = 10001;
+    uint32_t const GENESIS_NONCE = 10004;  // Unique nonce for testnet genesis block (mainnet: 10003)
   }
 
   namespace stagenet

@@ -51,7 +51,7 @@
 
 
 #if defined(__i386) || defined(__x86_64)
-#define MISALIGNED_OK	1
+#define MISALIGNED_OK    1
 #endif
 
 using epee::string_tools::pod_to_hex;
@@ -261,25 +261,25 @@ inline void lmdb_db_open(MDB_txn* txn, const char* name, int flags, MDB_dbi& dbi
 }  // anonymous namespace
 
 #define CURSOR(name) \
-	if (!m_cur_ ## name) { \
-	  int result = mdb_cursor_open(*m_write_txn, m_ ## name, &m_cur_ ## name); \
-	  if (result) \
+    if (!m_cur_ ## name) { \
+      int result = mdb_cursor_open(*m_write_txn, m_ ## name, &m_cur_ ## name); \
+      if (result) \
         throw0(DB_ERROR(lmdb_error("Failed to open cursor: ", result).c_str())); \
-	}
+    }
 
 #define RCURSOR(name) \
-	if (!m_cur_ ## name) { \
-	  int result = mdb_cursor_open(m_txn, m_ ## name, (MDB_cursor **)&m_cur_ ## name); \
-	  if (result) \
+    if (!m_cur_ ## name) { \
+      int result = mdb_cursor_open(m_txn, m_ ## name, (MDB_cursor **)&m_cur_ ## name); \
+      if (result) \
         throw0(DB_ERROR(lmdb_error("Failed to open cursor: ", result).c_str())); \
-	  if (m_cursors != &m_wcursors) \
-	    m_tinfo->m_ti_rflags.m_rf_ ## name = true; \
-	} else if (m_cursors != &m_wcursors && !m_tinfo->m_ti_rflags.m_rf_ ## name) { \
-	  int result = mdb_cursor_renew(m_txn, m_cur_ ## name); \
+      if (m_cursors != &m_wcursors) \
+        m_tinfo->m_ti_rflags.m_rf_ ## name = true; \
+    } else if (m_cursors != &m_wcursors && !m_tinfo->m_ti_rflags.m_rf_ ## name) { \
+      int result = mdb_cursor_renew(m_txn, m_cur_ ## name); \
       if (result) \
         throw0(DB_ERROR(lmdb_error("Failed to renew cursor: ", result).c_str())); \
-	  m_tinfo->m_ti_rflags.m_rf_ ## name = true; \
-	}
+      m_tinfo->m_ti_rflags.m_rf_ ## name = true; \
+    }
 
 namespace cryptonote
 {
@@ -466,7 +466,7 @@ void mdb_txn_safe::allow_new_txns()
 
 void mdb_txn_safe::increment_txns(int i)
 {
-	num_active_txns += i;
+    num_active_txns += i;
 }
 
 #define TXN_PREFIX(flags); \
@@ -1430,7 +1430,7 @@ void BlockchainLMDB::open(const std::string& filename, const int db_flags)
     throw0(DB_ERROR(lmdb_error("Failed to set max number of dbs: ", result).c_str()));
 
   int threads = tools::get_max_concurrency();
-  if (threads > 110 &&	/* maxreaders default is 126, leave some slots for other read processes */
+  if (threads > 110 &&    /* maxreaders default is 126, leave some slots for other read processes */
     (result = mdb_env_set_maxreaders(m_env, threads+16)))
     throw0(DB_ERROR(lmdb_error("Failed to set max number of readers: ", result).c_str()));
 
@@ -1565,7 +1565,7 @@ void BlockchainLMDB::open(const std::string& filename, const int db_flags)
         mdb_env_close(m_env);
         m_open = false;
         MFATAL("Existing lmdb database needs to be converted, which cannot be done on a read-only database.");
-        MFATAL("Please run monerod once to convert the database.");
+        MFATAL("Please run xwiftd once to convert the database.");
         return;
       }
       // Note that there was a schema change within version 0 as well.
@@ -4078,7 +4078,7 @@ void BlockchainLMDB::block_wtxn_stop()
     throw0(DB_ERROR_TXN_START((std::string("Attempted to stop write txn from the wrong thread in ")+__FUNCTION__).c_str()));
   {
     if (! m_batch_active)
-	{
+    {
       TIME_MEASURE_START(time1);
       m_write_txn->commit();
       TIME_MEASURE_FINISH(time1);
@@ -4087,7 +4087,7 @@ void BlockchainLMDB::block_wtxn_stop()
       delete m_write_txn;
       m_write_txn = nullptr;
       memset(&m_wcursors, 0, sizeof(m_wcursors));
-	}
+    }
   }
 }
 

@@ -1,0 +1,18 @@
+# Xwift Testnet Bootstrap Nodes
+# Add to xwift.conf with: add-priority-node=<line>
+# Update these with actual IPs/hostnames after deployment
+
+# Seed Node 1 - Digital Ocean (NYC)
+seed1.xwift-testnet.network:29080
+# <IP_ADDRESS_1>:29080
+
+# Seed Node 2 - Linode (Frankfurt)
+seed2.xwift-testnet.network:29080
+# <IP_ADDRESS_2>:29080
+
+# Seed Node 3 - Vultr (Singapore)
+seed3.xwift-testnet.network:29080
+# <IP_ADDRESS_3>:29080
+
+# Additional community nodes can be added below
+# Format: hostname:29080 or IP:29080
